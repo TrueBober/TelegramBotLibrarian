@@ -19,14 +19,9 @@ class Bookshelf {
     fun getBook(isbn: String) = books[isbn]
 
     /**
-     * Получить состояние книги
-     */
-    fun getBook(book: Book) = this.getBook(book.isbn)
-
-    /**
      * Получить список всех доступных книг
      */
-    fun getBooks() = listOf(this.books.values)
+    fun getBooks() = this.books.values.toList()
 
     /**
      * Получить список всех доступных книг для категории и всех ее потомков

@@ -32,8 +32,10 @@ data class Book(
         return true
     }
 
-    override fun hashCode(): Int {
-        return isbn.hashCode()
+    override fun hashCode() = isbn.hashCode()
+
+    override fun toString(): String {
+        return "Book(title='$title', author='$author', createDate=$createDate, numberSheets=$numberSheets, isbn='$isbn', description='$description', category=$category, publicationDate=$publicationDate)"
     }
 }
 
@@ -50,7 +52,7 @@ data class BookCategory(val name: String) {
         fun getUnclassifiedCategory() = NO_CATEGORY
     }
 
-    var parent: BookCategory? = null
+    var parent: BookCategory? = NO_CATEGORY
         private set
 
     constructor(name: String, parent: BookCategory) : this(name) {
