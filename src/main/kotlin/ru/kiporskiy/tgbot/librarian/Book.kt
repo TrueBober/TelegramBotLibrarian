@@ -57,4 +57,18 @@ data class BookCategory(val name: String) {
         this.parent = parent
     }
 
+    /**
+     * Текущая категория является родительской для category
+     * Анализируется вся цепочка "родителей" для текущей категории
+     */
+    fun isParentFor(category: BookCategory): Boolean {
+        var currentCategory: BookCategory? = category
+        var limit = 20
+        while (currentCategory != null && limit-- > 0) {
+            if (currentCategory == this)
+                return true
+            currentCategory = currentCategory.parent
+        }
+        return false
+    }
 }
