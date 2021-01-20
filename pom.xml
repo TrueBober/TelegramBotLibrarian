@@ -15,6 +15,8 @@
         <kotlin.version>1.4.0</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
         <junit.version>5.7.0</junit.version>
+        <botapi.version>5.0.1</botapi.version>
+        <jackson.databind>2.12.0</jackson.databind>
     </properties>
 
     <dependencies>
@@ -36,6 +38,19 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.pengrad</groupId>
+            <artifactId>java-telegram-bot-api</artifactId>
+            <version>${botapi.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.databind}</version>
         </dependency>
 
     </dependencies>
