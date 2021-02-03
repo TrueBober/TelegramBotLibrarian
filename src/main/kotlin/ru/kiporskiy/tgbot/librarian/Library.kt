@@ -15,7 +15,7 @@ class Bookshelf {
     private val books: MutableMap<String, Book> = ConcurrentSkipListMap()
 
     /**
-     * Получить состояние книги по ISBN
+     * Получить книгу по ISBN
      */
     fun getBook(isbn: String) = books[isbn]
 
@@ -33,7 +33,6 @@ class Bookshelf {
 
     /**
      * Добавить новую книгу на полку.
-     * При добавлении книги, которая уже забронирована будет выкинуто исключение IllegalArgumentException
      */
     fun addBook(book: Book) {
         books[book.isbn] = book
@@ -55,14 +54,6 @@ class Bookshelf {
     }
 
     /**
-     * Вернуть забронированную книгу на полку.
-     * Вернуть можно только ту книгу, которая уже была добавлена, а потом забронирована
-     */
-    fun returnBook(book: Book) {
-        this.addBook(book)
-    }
-
-    /**
      * Забронировать книгу.
      * Забронировать можно только свободную книгу.
      *
@@ -74,10 +65,10 @@ class Bookshelf {
 }
 
 /**
- * Читательский билет
+ * Библиотечный формуляр
  * Отображает какая книга у какого читателя "на руках".
  */
-data class LibraryCard(
+data class LibraryForm(
     val book: Book,
     val reader: Reader,
     val startDate: LocalDateTime,
@@ -112,7 +103,7 @@ class Library {
     /**
      * Занятые книги
      */
-    private val cards: List<LibraryCard> = ArrayList()
+    private val cards: List<LibraryForm> = ArrayList()
 
     /**
      * Добавить книгу в библиотеку

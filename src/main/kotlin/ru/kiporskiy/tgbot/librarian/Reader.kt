@@ -4,15 +4,13 @@ import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.*
 
+/**
+ * Читатель в библиотеке
+ */
 interface Reader {
 
     /**
-     * Язык, на котором происходит общение с пользователем
-     */
-    val locale: Locale
-
-    /**
-     * Пользователь
+     * Личные данные читателя
      */
     val user: User
 
@@ -21,13 +19,29 @@ interface Reader {
      */
     fun getRecommendedBookDuration(): Duration
 
+    /**
+     * Польчить язык, на котором отправлять сообщения пользователю
+     */
+    fun getReaderLocale() = user.locale
+
 }
 
+/**
+ * Администратор системы
+ */
 interface Admin: Reader {
     /**
      * Получить права администратора
      */
     fun getAdminAccess(): Set<AdminAccess>
+}
+
+/**
+ * Суперюзер
+ */
+interface Superuser: Admin {
+
+    override fun getAdminAccess() = AdminAccess.values().toSet()
 }
 
 /**
@@ -45,26 +59,21 @@ enum class AdminAccess {
     ADMIN_USERS
 }
 
-interface Superuser: Admin {
-
-    override fun getAdminAccess() = AdminAccess.values().toSet()
-}
-
-
 /**
  * "Обычный" читатель
  */
-data class SimpleReader(override val user: User, override val locale: Locale): Reader {
+data class SimpleReader(override val user: User): Reader {
     companion object {
         val DEFAULT_DURATION: Duration  = Duration.of(1, ChronoUnit.MONTHS)
     }
+
     override fun getRecommendedBookDuration() = DEFAULT_DURATION
 }
 
 /**
  * Администратор
  */
-data class SimpleAdmin(override val user: User, val access: Set<AdminAccess>, override val locale: Locale): Admin {
+data class SimpleAdmin(override val user: User, val access: Set<AdminAccess>): Admin {
 
     override fun getAdminAccess() = access
 
@@ -74,6 +83,6 @@ data class SimpleAdmin(override val user: User, val access: Set<AdminAccess>, ov
 /**
  * "Обычный" читатель
  */
-data class SimpleSuperuser(override val user: User, override val locale: Locale): Superuser {
+data class SimpleSuperuser(override val user: User): Superuser {
     override fun getRecommendedBookDuration() = SimpleReader.DEFAULT_DURATION
 }
