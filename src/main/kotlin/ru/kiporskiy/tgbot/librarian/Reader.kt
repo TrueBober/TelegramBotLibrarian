@@ -24,12 +24,17 @@ interface Reader {
      */
     fun getReaderLocale() = user.locale
 
+    /**
+     * Ид читательского билета
+     */
+    val readerCardId: ReaderCardId
+
 }
 
 /**
  * Администратор системы
  */
-interface Admin: Reader {
+interface Admin : Reader {
     /**
      * Получить права администратора
      */
@@ -39,7 +44,7 @@ interface Admin: Reader {
 /**
  * Суперюзер
  */
-interface Superuser: Admin {
+interface Superuser : Admin {
 
     override fun getAdminAccess() = AdminAccess.values().toSet()
 }
@@ -62,9 +67,9 @@ enum class AdminAccess {
 /**
  * "Обычный" читатель
  */
-data class SimpleReader(override val user: User): Reader {
+data class SimpleReader(override val readerCardId: ReaderCardId, override val user: User) : Reader {
     companion object {
-        val DEFAULT_DURATION: Duration  = Duration.of(1, ChronoUnit.MONTHS)
+        val DEFAULT_DURATION: Duration = Duration.ofDays(30)
     }
 
     override fun getRecommendedBookDuration() = DEFAULT_DURATION
@@ -73,7 +78,8 @@ data class SimpleReader(override val user: User): Reader {
 /**
  * Администратор
  */
-data class SimpleAdmin(override val user: User, val access: Set<AdminAccess>): Admin {
+data class SimpleAdmin(override val readerCardId: ReaderCardId, override val user: User, val access: Set<AdminAccess>) :
+    Admin {
 
     override fun getAdminAccess() = access
 
@@ -83,6 +89,6 @@ data class SimpleAdmin(override val user: User, val access: Set<AdminAccess>): A
 /**
  * "Обычный" читатель
  */
-data class SimpleSuperuser(override val user: User): Superuser {
+data class SimpleSuperuser(override val readerCardId: ReaderCardId, override val user: User) : Superuser {
     override fun getRecommendedBookDuration() = SimpleReader.DEFAULT_DURATION
 }

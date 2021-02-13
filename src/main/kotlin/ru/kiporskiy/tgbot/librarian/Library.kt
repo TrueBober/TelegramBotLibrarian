@@ -154,6 +154,11 @@ class Library {
     }
 
     /**
+     * Получить читателя по номеру читательского билета
+     */
+    fun getReader(user: User) = readers.firstOrNull { r -> r.user == user }
+
+    /**
      * Удалить книгу из библиотеки
      */
     fun removeReader(reader: Reader) {

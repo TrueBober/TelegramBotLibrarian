@@ -1,5 +1,10 @@
 {
-  "ru-RU": {
-    "notification.welcome": "Приветствую, %1. Я - бот-библиотекарь. С моей помощью Вы сможете забронировать книгу"
+  "ru": {
+    "notification.welcome": "Приветствую. Я - бот-библиотекарь. С моей помощью Вы сможете забронировать книгу",
+    "notification.unknown": "Неизвестная мне команда"
+  },
+  "en": {
+    "notification.welcome": "Hi",
+    "notification.unknown": "Unknown command"
   }
 }

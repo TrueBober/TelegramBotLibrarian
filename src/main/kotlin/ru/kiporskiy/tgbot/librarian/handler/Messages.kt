@@ -10,7 +10,7 @@ object Messages {
 
     private val translations: MutableMap<Locale, Translation> = HashMap()
 
-    private val defaultLocation: Locale = Locale("ru-RU")
+    private val defaultLocation: Locale = Locale("ru")
 
     fun init(pathToFile: String) {
         if (translations.isNotEmpty()) {
