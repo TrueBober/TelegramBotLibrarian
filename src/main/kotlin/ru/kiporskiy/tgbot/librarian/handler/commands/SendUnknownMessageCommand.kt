@@ -12,7 +12,7 @@ class SendUnknownMessageCommand(val transport: TgbotTransport, val reader: Reade
 
     override fun execute() {
         val message = Messages.getMessage(reader, messageKey, reader.user.name)
-        transport.sendSimpleMessageText(message, reader.user)
+        transport.sendSimpleMessageText(message, reader)
     }
 
 
