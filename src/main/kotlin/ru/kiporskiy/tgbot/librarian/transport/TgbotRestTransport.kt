@@ -5,7 +5,8 @@ import com.pengrad.telegrambot.UpdatesListener
 import com.pengrad.telegrambot.model.Message
 import com.pengrad.telegrambot.model.Update
 import com.pengrad.telegrambot.request.SendMessage
-import ru.kiporskiy.tgbot.librarian.User
+import ru.kiporskiy.tgbot.librarian.Reader
+import ru.kiporskiy.tgbot.librarian.components.User
 import ru.kiporskiy.tgbot.librarian.event.OnStartEvent
 import ru.kiporskiy.tgbot.librarian.event.OnUnknownEvent
 import ru.kiporskiy.tgbot.librarian.handler.EventHandler
@@ -21,8 +22,8 @@ class TgbotRestTransport(botapiToken: String): TgbotTransport {
         this.startListener()
     }
 
-    override fun sendSimpleMessageText(message: String, user: User) {
-        val request = SendMessage(user.id, message)
+    override fun sendSimpleMessageText(message: String, reader: Reader) {
+        val request = SendMessage(reader.user.id, message)
         this.bot.execute(request)
     }
 

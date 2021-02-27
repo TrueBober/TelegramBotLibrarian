@@ -44,7 +44,8 @@ object Messages {
      * Получить сообщение для читателя по ключу
      */
     fun getMessage(reader: Reader, key: String, vararg params: String): String {
-        return this.getMessage(reader.getReaderLocale(), key, *params)
+        val locale = reader.user.locale
+        return this.getMessage(locale, key, *params)
     }
 
     /**

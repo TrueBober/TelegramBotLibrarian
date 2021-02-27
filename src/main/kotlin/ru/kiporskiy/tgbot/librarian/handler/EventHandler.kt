@@ -1,6 +1,7 @@
 package ru.kiporskiy.tgbot.librarian.handler
 
 import ru.kiporskiy.tgbot.librarian.*
+import ru.kiporskiy.tgbot.librarian.components.User
 import ru.kiporskiy.tgbot.librarian.event.LibrarianEvent
 import ru.kiporskiy.tgbot.librarian.event.OnStartEvent
 import ru.kiporskiy.tgbot.librarian.event.OnUnknownEvent
@@ -38,7 +39,7 @@ class DefaultEventHandler(private val rgbotTransport: TgbotTransport,
     private fun getReader(user: User): Reader {
         var reader = library.getReader(user)
         if (reader == null) {
-            reader = SimpleReader(ReaderCardId(Random.nextLong()), user)
+            reader = SimpleReader(user)
             library.addReader(reader)
         }
         return reader

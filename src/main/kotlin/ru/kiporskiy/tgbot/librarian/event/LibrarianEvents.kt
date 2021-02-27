@@ -1,6 +1,6 @@
 package ru.kiporskiy.tgbot.librarian.event
 
-import ru.kiporskiy.tgbot.librarian.User
+import ru.kiporskiy.tgbot.librarian.components.User
 
 /**
  * События, возникающие внутри сервиса

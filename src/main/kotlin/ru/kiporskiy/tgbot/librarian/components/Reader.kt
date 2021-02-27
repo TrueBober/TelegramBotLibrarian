@@ -1,8 +1,7 @@
 package ru.kiporskiy.tgbot.librarian
 
+import ru.kiporskiy.tgbot.librarian.components.User
 import java.time.Duration
-import java.time.temporal.ChronoUnit
-import java.util.*
 
 /**
  * Читатель в библиотеке
@@ -18,16 +17,6 @@ interface Reader {
      * Получить рекомендуемое время, через которое пользователь должен будет вернуть книгу
      */
     fun getRecommendedBookDuration(): Duration
-
-    /**
-     * Польчить язык, на котором отправлять сообщения пользователю
-     */
-    fun getReaderLocale() = user.locale
-
-    /**
-     * Ид читательского билета
-     */
-    val readerCardId: ReaderCardId
 
 }
 
@@ -49,6 +38,7 @@ interface Superuser : Admin {
     override fun getAdminAccess() = AdminAccess.values().toSet()
 }
 
+
 /**
  * Права администратора
  */
@@ -64,10 +54,11 @@ enum class AdminAccess {
     ADMIN_USERS
 }
 
+
 /**
  * "Обычный" читатель
  */
-data class SimpleReader(override val readerCardId: ReaderCardId, override val user: User) : Reader {
+data class SimpleReader(override val user: User) : Reader {
     companion object {
         val DEFAULT_DURATION: Duration = Duration.ofDays(30)
     }
@@ -78,7 +69,7 @@ data class SimpleReader(override val readerCardId: ReaderCardId, override val us
 /**
  * Администратор
  */
-data class SimpleAdmin(override val readerCardId: ReaderCardId, override val user: User, val access: Set<AdminAccess>) :
+data class SimpleAdmin(override val user: User, val access: Set<AdminAccess>) :
     Admin {
 
     override fun getAdminAccess() = access
@@ -87,8 +78,21 @@ data class SimpleAdmin(override val readerCardId: ReaderCardId, override val use
 }
 
 /**
- * "Обычный" читатель
+ * Суперпользователь
  */
-data class SimpleSuperuser(override val readerCardId: ReaderCardId, override val user: User) : Superuser {
+data class SimpleSuperuser(override val user: User) : Superuser {
     override fun getRecommendedBookDuration() = SimpleReader.DEFAULT_DURATION
+}
+
+/**
+ * Фабрика для классов читателей
+ */
+object ReaderFactory {
+
+    fun getReader(user: User): Reader = SimpleReader(user)
+
+    fun getAdmin(user: User, access: Set<AdminAccess>): Admin = SimpleAdmin(user, access)
+
+    fun getSuperuser(user: User): Superuser = SimpleSuperuser(user)
+
 }
