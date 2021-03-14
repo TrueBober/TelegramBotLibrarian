@@ -1,4 +1,4 @@
-package ru.kiporskiy.tgbot.librarian
+package ru.kiporskiy.tgbot.librarian.components
 
 import java.time.LocalDate
 import java.time.LocalDateTime

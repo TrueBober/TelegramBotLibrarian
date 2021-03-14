@@ -1,6 +1,5 @@
-package ru.kiporskiy.tgbot.librarian
+package ru.kiporskiy.tgbot.librarian.components
 
-import ru.kiporskiy.tgbot.librarian.components.User
 import java.time.LocalDateTime
 import java.util.concurrent.ConcurrentSkipListMap
 

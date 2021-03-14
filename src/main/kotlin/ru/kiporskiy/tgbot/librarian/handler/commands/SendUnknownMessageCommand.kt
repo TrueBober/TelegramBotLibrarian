@@ -1,10 +1,13 @@
 package ru.kiporskiy.tgbot.librarian.handler.commands
 
-import ru.kiporskiy.tgbot.librarian.Reader
+import ru.kiporskiy.tgbot.librarian.components.Reader
 import ru.kiporskiy.tgbot.librarian.handler.Messages
 import ru.kiporskiy.tgbot.librarian.transport.TgbotTransport
 
-class SendUnknownMessageCommand(val transport: TgbotTransport, val reader: Reader) : TgbotLibrarianCommand {
+/**
+ * Команда выполняет отправку сообщения пользователю о том, что сервер получил от него неизвестную команду
+ */
+class SendUnknownMessageCommand(private val transport: TgbotTransport, private val reader: Reader) : TgbotLibrarianCommand {
 
     companion object {
         private const val messageKey = "notification.unknown"
@@ -12,7 +15,7 @@ class SendUnknownMessageCommand(val transport: TgbotTransport, val reader: Reade
 
     override fun execute() {
         val message = Messages.getMessage(reader, messageKey, reader.user.name)
-        transport.sendSimpleMessageText(message, reader)
+        this.transport.sendSimpleMessageText(message, reader)
     }
 
 

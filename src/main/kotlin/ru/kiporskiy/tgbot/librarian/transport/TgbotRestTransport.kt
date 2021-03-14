@@ -5,7 +5,7 @@ import com.pengrad.telegrambot.UpdatesListener
 import com.pengrad.telegrambot.model.Message
 import com.pengrad.telegrambot.model.Update
 import com.pengrad.telegrambot.request.SendMessage
-import ru.kiporskiy.tgbot.librarian.Reader
+import ru.kiporskiy.tgbot.librarian.components.Reader
 import ru.kiporskiy.tgbot.librarian.components.User
 import ru.kiporskiy.tgbot.librarian.event.OnStartEvent
 import ru.kiporskiy.tgbot.librarian.event.OnUnknownEvent

@@ -3,6 +3,8 @@ package ru.kiporskiy.tgbot.librarian
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import ru.kiporskiy.tgbot.librarian.components.BookCategory
+import ru.kiporskiy.tgbot.librarian.components.Bookshelf
 
 internal class BookshelfTest {
 

@@ -1,14 +1,12 @@
 package ru.kiporskiy.tgbot.librarian.handler
 
-import ru.kiporskiy.tgbot.librarian.*
-import ru.kiporskiy.tgbot.librarian.components.User
+import ru.kiporskiy.tgbot.librarian.components.*
 import ru.kiporskiy.tgbot.librarian.event.LibrarianEvent
 import ru.kiporskiy.tgbot.librarian.event.OnStartEvent
 import ru.kiporskiy.tgbot.librarian.event.OnUnknownEvent
 import ru.kiporskiy.tgbot.librarian.handler.commands.SendUnknownMessageCommand
 import ru.kiporskiy.tgbot.librarian.handler.commands.SendWelcomeMessageCommand
 import ru.kiporskiy.tgbot.librarian.transport.TgbotTransport
-import kotlin.random.Random
 
 /**
  * Обработчик событий
@@ -23,7 +21,8 @@ interface EventHandler {
 }
 
 class DefaultEventHandler(private val rgbotTransport: TgbotTransport,
-                          private val library: Library): EventHandler {
+                          private val library: Library
+): EventHandler {
 
     override fun handleEvent(event: LibrarianEvent) {
         when (event) {
@@ -39,7 +38,8 @@ class DefaultEventHandler(private val rgbotTransport: TgbotTransport,
     private fun getReader(user: User): Reader {
         var reader = library.getReader(user)
         if (reader == null) {
-            reader = SimpleReader(user)
+            //reader = SimpleReader(user)
+            reader = SimpleSuperuser(user)
             library.addReader(reader)
         }
         return reader

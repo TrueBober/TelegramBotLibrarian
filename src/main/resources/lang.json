@@ -1,10 +1,16 @@
 {
   "ru": {
     "notification.welcome": "Приветствую. Я - бот-библиотекарь. С моей помощью Вы сможете забронировать книгу",
-    "notification.unknown": "Неизвестная мне команда"
+    "notification.unknown": "Неизвестная мне команда",
+    "notification.select_command": "Выберите команду из списка:",
+    "notification.no_command": "Нет доступных команд \uD83D\uDE14",
+    "action.add_library.description": "Добавить новую библиотеку"
   },
   "en": {
     "notification.welcome": "Hi",
-    "notification.unknown": "Unknown command"
+    "notification.unknown": "Unknown command",
+    "notification.select_command": "Choose the command you need:",
+    "notification.no_command": "No commands available \uD83D\uDE14",
+    "action.add_library.description": "Add new library"
   }
 }

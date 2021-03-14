@@ -1,6 +1,6 @@
 package ru.kiporskiy.tgbot.librarian.transport
 
-import ru.kiporskiy.tgbot.librarian.Reader
+import ru.kiporskiy.tgbot.librarian.components.Reader
 
 interface TgbotTransport {
 

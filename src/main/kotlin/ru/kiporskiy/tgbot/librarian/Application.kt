@@ -1,5 +1,6 @@
 package ru.kiporskiy.tgbot.librarian
 
+import ru.kiporskiy.tgbot.librarian.components.Library
 import ru.kiporskiy.tgbot.librarian.handler.DefaultEventHandler
 import ru.kiporskiy.tgbot.librarian.handler.EventHandler
 import ru.kiporskiy.tgbot.librarian.handler.Messages

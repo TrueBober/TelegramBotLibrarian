@@ -2,7 +2,7 @@ package ru.kiporskiy.tgbot.librarian.handler
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import ru.kiporskiy.tgbot.librarian.Reader
+import ru.kiporskiy.tgbot.librarian.components.Reader
 import java.io.FileReader
 import java.util.*
 

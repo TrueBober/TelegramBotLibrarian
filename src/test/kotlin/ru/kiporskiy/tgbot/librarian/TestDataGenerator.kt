@@ -1,6 +1,8 @@
 package ru.kiporskiy.tgbot.librarian
 
-import ru.kiporskiy.tgbot.librarian.BookCategory.Companion.getUnclassifiedCategory
+import ru.kiporskiy.tgbot.librarian.components.Book
+import ru.kiporskiy.tgbot.librarian.components.BookCategory
+import ru.kiporskiy.tgbot.librarian.components.BookCategory.Companion.getUnclassifiedCategory
 import java.time.LocalDate
 import java.time.LocalDateTime
 

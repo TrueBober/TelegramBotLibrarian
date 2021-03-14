@@ -1,4 +1,4 @@
-package ru.kiporskiy.tgbot.librarian.transport
+package ru.kiporskiy.tgbot.librarian.handler.commands
 
 import java.util.*
 

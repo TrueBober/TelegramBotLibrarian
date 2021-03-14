@@ -1,6 +1,5 @@
-package ru.kiporskiy.tgbot.librarian
+package ru.kiporskiy.tgbot.librarian.components
 
-import ru.kiporskiy.tgbot.librarian.components.User
 import java.time.Duration
 
 /**
@@ -18,6 +17,15 @@ interface Reader {
      */
     fun getRecommendedBookDuration(): Duration
 
+    /**
+     * Пользователь - администратор
+     */
+    fun isAdmin(): Boolean = false
+
+    /**
+     * Пользователь - суперпользователь
+     */
+    fun isSuperuser(): Boolean = false
 }
 
 /**
@@ -28,6 +36,8 @@ interface Admin : Reader {
      * Получить права администратора
      */
     fun getAdminAccess(): Set<AdminAccess>
+
+    override fun isAdmin() = true
 }
 
 /**
@@ -36,6 +46,10 @@ interface Admin : Reader {
 interface Superuser : Admin {
 
     override fun getAdminAccess() = AdminAccess.values().toSet()
+
+    override fun isAdmin() = true
+
+    override fun isSuperuser() = true
 }
 
 
