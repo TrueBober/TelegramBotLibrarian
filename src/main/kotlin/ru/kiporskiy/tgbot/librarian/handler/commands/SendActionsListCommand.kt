@@ -28,7 +28,8 @@ class SendActionsListCommand(
             } else {
                 val chooseCommandMessage = Messages.getMessage(reader, messageKeyChooseCommand, reader.user.name)
                 val msgBuilder = StringBuilder("$chooseCommandMessage\n\n")
-                for (action in actions) {
+                actions.forEachIndexed { index, action ->
+                    if (index > 0) msgBuilder.append('\n')
                     val command = "/" + action.getCommand()
                     val descriptionKey = action.getCommandDescriptionKey()
                     val commandDescription = Messages.getMessage(reader, descriptionKey, reader.user.name)

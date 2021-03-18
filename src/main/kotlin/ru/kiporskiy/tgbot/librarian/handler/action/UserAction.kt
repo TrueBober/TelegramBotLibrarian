@@ -9,13 +9,16 @@ interface UserAction {
 
     companion object {
 
-        private val allActions = listOf<UserAction>(AddLibraryUserAction)
+        private val allActions = listOf(
+            AddLibraryUserAction,
+            AddLibraryAdminAction
+        )
 
         fun getUserActions(reader: Reader): List<UserAction> {
-            return allActions.filter {
-                it.isForUser()
-                        || it.isForAdmin() && (reader.isAdmin() || reader.isSuperuser())
-                        || it.isForSuperuser() && reader.isSuperuser()
+            return when {
+                reader.isSuperuser() -> allActions
+                reader.isAdmin() -> allActions.filter { it.isForUser() || it.isForAdmin() }
+                else -> allActions.filter { it.isForUser() }
             }
         }
 
@@ -58,5 +61,18 @@ object AddLibraryUserAction : UserAction {
     override fun getCommand() = "add_library"
 
     override fun getCommandDescriptionKey() = "action.add_library.description"
+
+}
+
+/**
+ * Добавить в библиотеку администратора
+ */
+object AddLibraryAdminAction : UserAction {
+
+    override fun isForSuperuser() = true
+
+    override fun getCommand() = "add_admin"
+
+    override fun getCommandDescriptionKey() = "action.add_admin.description"
 
 }

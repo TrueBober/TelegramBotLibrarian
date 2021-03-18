@@ -7,8 +7,9 @@ import ru.kiporskiy.tgbot.librarian.handler.Messages
 import ru.kiporskiy.tgbot.librarian.transport.TgbotRestTransport
 
 fun main(vararg args: String) {
-    assert(args.size == 1)
+    assert(args.size == 2)
     val botapiToken = args[0]
+    args[1].split(',').forEach { SUPERUSERS_USERNAMES.add(it) }
     val transport = TgbotRestTransport(botapiToken)
     val library = Library()
     val eventHandler: EventHandler = DefaultEventHandler(transport, library)
@@ -17,5 +18,6 @@ fun main(vararg args: String) {
     Messages.init(Messages.javaClass.classLoader.getResource("lang.json").path)
 
     while (true){
+        Thread.sleep(10)
     }
 }

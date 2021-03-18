@@ -1,5 +1,6 @@
 package ru.kiporskiy.tgbot.librarian.handler
 
+import ru.kiporskiy.tgbot.librarian.SUPERUSERS_USERNAMES
 import ru.kiporskiy.tgbot.librarian.components.*
 import ru.kiporskiy.tgbot.librarian.event.LibrarianEvent
 import ru.kiporskiy.tgbot.librarian.event.OnStartEvent
@@ -38,8 +39,10 @@ class DefaultEventHandler(private val rgbotTransport: TgbotTransport,
     private fun getReader(user: User): Reader {
         var reader = library.getReader(user)
         if (reader == null) {
-            //reader = SimpleReader(user)
-            reader = SimpleSuperuser(user)
+            reader = if (SUPERUSERS_USERNAMES.contains(user.name))
+                SimpleSuperuser(user)
+            else
+                SimpleReader(user)
             library.addReader(reader)
         }
         return reader
