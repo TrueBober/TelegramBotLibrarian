@@ -11,7 +11,8 @@ interface UserAction {
 
         private val allActions = listOf(
             AddLibraryUserAction,
-            AddLibraryAdminAction
+            AddLibraryAdminAction,
+            GetLibrariesAction
         )
 
         fun getUserActions(reader: Reader): List<UserAction> {
@@ -74,5 +75,18 @@ object AddLibraryAdminAction : UserAction {
     override fun getCommand() = "add_admin"
 
     override fun getCommandDescriptionKey() = "action.add_admin.description"
+
+}
+
+/**
+ * Получить список библиотек
+ */
+object GetLibrariesAction : UserAction {
+
+    override fun isForSuperuser() = true
+
+    override fun getCommand() = "get_libs"
+
+    override fun getCommandDescriptionKey() = "action.get_libs.description"
 
 }

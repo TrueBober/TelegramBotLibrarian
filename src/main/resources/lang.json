@@ -5,7 +5,8 @@
     "notification.select_command": "Выберите команду из списка:",
     "notification.no_command": "Нет доступных команд \uD83D\uDE14",
     "action.add_library.description": "Добавить новую библиотеку",
-    "action.add_admin.description": "Добавить администратора"
+    "action.add_admin.description": "Добавить администратора",
+    "action.get_libs.description": "Получить названия библиотек"
   },
   "en": {
     "notification.welcome": "Hi",
@@ -13,6 +14,7 @@
     "notification.select_command": "Choose the command you need:",
     "notification.no_command": "No commands available \uD83D\uDE14",
     "action.add_library.description": "Add new library",
-    "action.add_admin.description": "Add admin"
+    "action.add_admin.description": "Add admin",
+    "action.get_libs.description": "Get libraries"
   }
 }
