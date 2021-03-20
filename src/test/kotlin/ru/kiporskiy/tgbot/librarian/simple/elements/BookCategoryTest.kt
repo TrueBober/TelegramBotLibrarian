@@ -14,9 +14,10 @@ internal class BookCategoryTest {
      * Допустимо не указывать родителя, тогда не будет родительской категории
      */
     private fun getCategory(
+        id: Int = Random.nextInt(),
         name: String = Random.nextLong().toString(),
         parent: BookCategory? = null
-    ) = BookCategory(name, parent)
+    ) = BookCategory(id, name, parent)
 
     @Test
     @DisplayName("Проверка успешного создания экземпляра категории книг без родительской категории")
@@ -34,7 +35,7 @@ internal class BookCategoryTest {
     }
 
     @Test
-    @DisplayName("Проверить, что 2 категории с разными названиями не эквивалентны друг другу")
+    @DisplayName("Проверить, что 2 категории с разными ид не эквивалентны друг другу")
     internal fun createCategoryAndTestNotEquality() {
         val cat1 = getCategory()
         val cat2 = getCategory()
@@ -42,11 +43,12 @@ internal class BookCategoryTest {
     }
 
     @Test
-    @DisplayName("Проверить, что 2 категории с одинаковыми названиями эквивалентны друг другу")
+    @DisplayName("Проверить, что 2 категории с одинаковыми ид эквивалентны друг другу")
     internal fun createCategoryAndTestEquality() {
+        val id = 100
         val parent1 = getCategory()
-        val cat1 = getCategory("Parent1", parent1)
-        val cat2 = getCategory("Parent1")
+        val cat1 = getCategory(id,parent = parent1)
+        val cat2 = getCategory(id)
         assertEquals(cat1, cat2)
     }
 
