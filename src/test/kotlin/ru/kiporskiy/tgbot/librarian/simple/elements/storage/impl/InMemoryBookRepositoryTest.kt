@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import ru.kiporskiy.tgbot.librarian.simple.elements.Book
 import java.time.Year
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 internal class InMemoryBookRepositoryTest {
@@ -19,8 +20,8 @@ internal class InMemoryBookRepositoryTest {
     }
 
     private fun getBook(isbn: String = "ISBN", category: Int? = null): Book {
-        val title = "Title_" + Random.nextInt(0, 10)
-        val author = "Author_" + Random.nextInt(0, 10)
+        val title = "Title_" + Random.nextLong()
+        val author = "Author_" + Random.nextLong()
         val year = Year.of(Random.nextInt(1970, 2020))
         val pages = Random.nextInt(100, 1000)
         val locale = Locale("ru")
@@ -70,5 +71,68 @@ internal class InMemoryBookRepositoryTest {
         assertTrue(InMemoryBookRepository.find(1).containsAll(listOf(book1, book3)))
         assertTrue(InMemoryBookRepository.find(2).containsAll(listOf(book2)))
         assertTrue(InMemoryBookRepository.find(3).containsAll(listOf(book4)))
+    }
+
+    @Test
+    @DisplayName("Постраничное получение книг с сортировкой по названию")
+    internal fun findAllOrderByTitlePageable() {
+        val size = 100
+        val books = ArrayList<Book>()
+
+        for (i in 0 until size) {
+            val book = getBook(i.toString())
+            books += book
+            InMemoryBookRepository.add(book)
+        }
+
+        books.sortBy { b -> b.title }
+
+        //первые 10 книг
+        val firstBooks = books.subList(0, 10)
+        val firstBooksTest = InMemoryBookRepository.findAllOrderByTitlePageable(0, 10)
+        assertEquals(firstBooks, firstBooksTest)
+
+        //вторые 10 книг
+        val secondBooks = books.subList(10, 20)
+        val secondBooksTest = InMemoryBookRepository.findAllOrderByTitlePageable(1, 10)
+        assertEquals(secondBooks, secondBooksTest)
+
+        //последние 10 книг
+        val lastBooks = books.subList(90, 100)
+        val lastBooksTest = InMemoryBookRepository.findAllOrderByTitlePageable(9, 10)
+        assertEquals(lastBooks, lastBooksTest)
+
+        //последние 5 книг
+        val last5Books = books.subList(95, 100)
+        val last5BooksTest = InMemoryBookRepository.findAllOrderByTitlePageable(1, 95)
+        assertEquals(last5Books, last5BooksTest)
+    }
+
+    @Test
+    @DisplayName("Постраничное получение книг определенной категории с сортировкой по названию")
+    internal fun findWithCategoryOrderByTitlePageable() {
+        val size = 100
+        val booksA = ArrayList<Book>()
+        val booksB = ArrayList<Book>()
+
+        for (i in 0 until size) {
+            val category = Random.nextInt(0, 2)
+            val book = getBook(i.toString(), category)
+            if (category == 0) booksA += book else booksB += book
+            InMemoryBookRepository.add(book)
+        }
+
+        booksA.sortBy { b -> b.title }
+        booksB.sortBy { b -> b.title }
+
+        //первые 10 книг категории А
+        val firstBooksA = booksA.subList(0, 10)
+        val firstBooksATest = InMemoryBookRepository.findWithCategoryOrderByTitlePageable(0, 0, 10)
+        assertEquals(firstBooksA, firstBooksATest)
+
+        //вторые 10 книг категории Б
+        val firstBooksB = booksB.subList(10, 20)
+        val firstBooksBTest = InMemoryBookRepository.findWithCategoryOrderByTitlePageable(1, 1, 10)
+        assertEquals(firstBooksB, firstBooksBTest)
     }
 }
