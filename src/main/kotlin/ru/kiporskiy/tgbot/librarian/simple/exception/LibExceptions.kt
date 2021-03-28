@@ -29,3 +29,8 @@ abstract class UpdateCategoryException(val category: BookCategory): Exception()
  * Обновляемая категория не найдена
  */
 class CategoryNotFoundException(category: BookCategory): UpdateCategoryException(category)
+
+/**
+ * Исключение - книга уже забронирована
+ */
+object BookAlreadyBookingException: Exception()

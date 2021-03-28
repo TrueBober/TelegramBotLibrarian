@@ -23,4 +23,9 @@ interface ReaderRepository {
      */
     fun setSuperuser(user: User)
 
+    /**
+     * Получить читателя по идентификатору
+     */
+    fun getReader(id: Long): Reader?
+
 }

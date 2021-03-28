@@ -24,4 +24,16 @@ data class User(
     override fun hashCode(): Int {
         return id
     }
+
+    /**
+     * Проверяет, что все поля пользователей совпадают
+     *
+     * @return true, когда 2 объекта абсолютно аналогичны друг другу, false - иначе
+     */
+    fun isAnalog(user: User): Boolean {
+        return user.id == id
+                && user.firstName == firstName
+                && user.lastName == lastName
+                && user.username == username
+    }
 }

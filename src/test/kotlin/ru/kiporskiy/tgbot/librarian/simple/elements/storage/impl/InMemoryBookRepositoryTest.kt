@@ -5,9 +5,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import ru.kiporskiy.tgbot.librarian.getTestBook
 import ru.kiporskiy.tgbot.librarian.simple.elements.Book
-import java.time.Year
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 
@@ -19,19 +18,10 @@ internal class InMemoryBookRepositoryTest {
         assertTrue(InMemoryBookRepository.findAll().isEmpty())
     }
 
-    private fun getBook(isbn: String = "ISBN", category: Int? = null): Book {
-        val title = "Title_" + Random.nextLong()
-        val author = "Author_" + Random.nextLong()
-        val year = Year.of(Random.nextInt(1970, 2020))
-        val pages = Random.nextInt(100, 1000)
-        val locale = Locale("ru")
-        return Book(isbn, title, author, year, pages, category, locale)
-    }
-
     @Test
     @DisplayName("Тест проверяет добавление и получение книги")
     internal fun addAndGet() {
-        val book = getBook()
+        val book = getTestBook()
         InMemoryBookRepository.add(book)
         val books = InMemoryBookRepository.findAll()
         assertEquals(listOf(book), books)
@@ -40,10 +30,10 @@ internal class InMemoryBookRepositoryTest {
     @Test
     @DisplayName("Тест проверяет, что при добавлении нескольких книг с одинаковым ISBN добавляется только последняя")
     internal fun addWithOneIsbn() {
-        val book1 = getBook("1")
-        val book2 = getBook("2")
-        val book1_2 = getBook("1")
-        val book1_3 = getBook("1")
+        val book1 = getTestBook("1")
+        val book2 = getTestBook("2")
+        val book1_2 = getTestBook("1")
+        val book1_3 = getTestBook("1")
 
         InMemoryBookRepository.add(book1)
         InMemoryBookRepository.add(book2)
@@ -58,10 +48,10 @@ internal class InMemoryBookRepositoryTest {
     @Test
     @DisplayName("Поиск книг по категориям")
     internal fun findByCategory() {
-        val book1 = getBook("1", 1)
-        val book2 = getBook("2", 2)
-        val book3 = getBook("3", 1)
-        val book4 = getBook("4", 3)
+        val book1 = getTestBook("1", 1)
+        val book2 = getTestBook("2", 2)
+        val book3 = getTestBook("3", 1)
+        val book4 = getTestBook("4", 3)
 
         InMemoryBookRepository.add(book1)
         InMemoryBookRepository.add(book2)
@@ -80,7 +70,7 @@ internal class InMemoryBookRepositoryTest {
         val books = ArrayList<Book>()
 
         for (i in 0 until size) {
-            val book = getBook(i.toString())
+            val book = getTestBook(i.toString())
             books += book
             InMemoryBookRepository.add(book)
         }
@@ -117,7 +107,7 @@ internal class InMemoryBookRepositoryTest {
 
         for (i in 0 until size) {
             val category = Random.nextInt(0, 2)
-            val book = getBook(i.toString(), category)
+            val book = getTestBook(i.toString(), category)
             if (category == 0) booksA += book else booksB += book
             InMemoryBookRepository.add(book)
         }

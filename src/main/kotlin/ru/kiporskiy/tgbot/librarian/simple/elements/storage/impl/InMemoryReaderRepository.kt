@@ -12,6 +12,11 @@ import java.util.concurrent.ConcurrentHashMap
 object InMemoryReaderRepository : ReaderRepository {
 
     /**
+     * Список зарегистрированных читателей
+     */
+    private val readers: MutableSet<Reader> = ConcurrentHashMap.newKeySet()
+
+    /**
      * Список логинов администраторов
      */
     private val admins: MutableSet<String> = ConcurrentHashMap.newKeySet()
@@ -23,12 +28,21 @@ object InMemoryReaderRepository : ReaderRepository {
 
 
     override fun getReader(user: User): Reader {
-        return when {
+        val reader = readers.firstOrNull { it.user == user }
+        if (reader != null && user.isAnalog(reader.user))
+            return reader
+
+
+        val result = when {
             superusers.contains(user.username) -> ReaderFactory.getSuperuser(user)
             admins.contains(user.username) -> ReaderFactory.getAdmin(user)
             else -> ReaderFactory.getReader(user)
         }
+        readers.add(result)
+        return result
     }
+
+    override fun getReader(id: Long) = readers.firstOrNull { it.id == id }
 
     override fun setAdmin(user: User) {
         superusers.remove(user.username)
@@ -43,5 +57,6 @@ object InMemoryReaderRepository : ReaderRepository {
     internal fun clear() {
         admins.clear()
         superusers.clear()
+        readers.clear()
     }
 }
