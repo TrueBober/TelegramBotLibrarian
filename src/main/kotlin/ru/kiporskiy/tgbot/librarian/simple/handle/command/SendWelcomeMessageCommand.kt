@@ -13,7 +13,8 @@ import ru.kiporskiy.tgbot.librarian.simple.transport.message.TextMessage
 class SendWelcomeMessageCommand(private val sender: Sender, private val reader: Reader) : Command {
 
     companion object {
-        const val message = "Приветствую. Я - бот-библиотекарь. С моей помощью Вы сможете забронировать книгу"
+        const val message = "Приветствую. Я - бот-библиотекарь. С моей помощью Вы сможете забронировать книгу. Для " +
+                "получения списка команд отправьте команду /get_command из любого меню"
     }
 
     override fun execute() {
