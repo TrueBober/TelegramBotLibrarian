@@ -1,4 +1,4 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage.impl
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl
 
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import ru.kiporskiy.tgbot.librarian.getTestBook
 import ru.kiporskiy.tgbot.librarian.getTestUser
-import ru.kiporskiy.tgbot.librarian.simple.elements.Book
-import ru.kiporskiy.tgbot.librarian.simple.elements.Reader
-import ru.kiporskiy.tgbot.librarian.simple.elements.User
-import ru.kiporskiy.tgbot.librarian.simple.exception.BookAlreadyBookingException
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.Book
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.Reader
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.User
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookAlreadyBookingException
 import kotlin.test.assertEquals
 
 internal class InMemoryReaderBookingRepositoryTest {

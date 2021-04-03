@@ -1,6 +1,6 @@
-package ru.kiporskiy.tgbot.librarian.simple.exception
+package ru.kiporskiy.tgbot.librarian.simple.core.exception
 
-import ru.kiporskiy.tgbot.librarian.simple.elements.BookCategory
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.BookCategory
 
 /**
  * Родительский класс для всех исключений при добавлении новой категории

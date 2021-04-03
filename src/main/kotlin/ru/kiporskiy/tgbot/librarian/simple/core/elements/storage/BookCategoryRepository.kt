@@ -1,7 +1,7 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage
 
-import ru.kiporskiy.tgbot.librarian.simple.elements.BookCategory
-import ru.kiporskiy.tgbot.librarian.simple.exception.*
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.BookCategory
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.*
 
 /**
  * Репозиторий для получения категорий книг

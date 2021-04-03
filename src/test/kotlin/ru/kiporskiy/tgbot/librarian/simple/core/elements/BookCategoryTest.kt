@@ -1,4 +1,4 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements
+package ru.kiporskiy.tgbot.librarian.simple.core.elements
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

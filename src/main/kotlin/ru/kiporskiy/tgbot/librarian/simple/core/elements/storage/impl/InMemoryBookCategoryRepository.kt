@@ -1,12 +1,12 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage.impl
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl
 
 import ru.kiporskiy.tgbot.librarian.simple.CATEGORY_BOOK_MAX_DEEP
-import ru.kiporskiy.tgbot.librarian.simple.elements.BookCategory
-import ru.kiporskiy.tgbot.librarian.simple.elements.storage.BookCategoryRepository
-import ru.kiporskiy.tgbot.librarian.simple.exception.BookCategoryAlreadyExistsException
-import ru.kiporskiy.tgbot.librarian.simple.exception.BookCategoryLoopException
-import ru.kiporskiy.tgbot.librarian.simple.exception.BookCategoryTooDeepNestingExistsException
-import ru.kiporskiy.tgbot.librarian.simple.exception.CategoryNotFoundException
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.BookCategory
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.BookCategoryRepository
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryAlreadyExistsException
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryLoopException
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryTooDeepNestingExistsException
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.CategoryNotFoundException
 import java.util.concurrent.ConcurrentHashMap.newKeySet
 import java.util.concurrent.atomic.AtomicInteger
 

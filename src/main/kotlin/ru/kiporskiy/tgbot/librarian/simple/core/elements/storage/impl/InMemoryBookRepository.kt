@@ -1,7 +1,7 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage.impl
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl
 
-import ru.kiporskiy.tgbot.librarian.simple.elements.Book
-import ru.kiporskiy.tgbot.librarian.simple.elements.storage.BookRepository
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.Book
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.BookRepository
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.min
 

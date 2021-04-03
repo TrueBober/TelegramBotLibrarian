@@ -1,4 +1,4 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage.impl
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import ru.kiporskiy.tgbot.librarian.getTestBook
-import ru.kiporskiy.tgbot.librarian.simple.elements.Book
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.Book
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 

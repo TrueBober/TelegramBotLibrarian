@@ -1,7 +1,6 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage
 
-import ru.kiporskiy.tgbot.librarian.simple.elements.Book
-import ru.kiporskiy.tgbot.librarian.simple.elements.BookCategory
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.Book
 
 /**
  * Репозиторий для получения книг

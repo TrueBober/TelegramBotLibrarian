@@ -1,4 +1,4 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage.impl
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl
 
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -6,13 +6,13 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import ru.kiporskiy.tgbot.librarian.simple.CATEGORY_BOOK_MAX_DEEP
-import ru.kiporskiy.tgbot.librarian.simple.elements.BookCategory
-import ru.kiporskiy.tgbot.librarian.simple.exception.BookCategoryAlreadyExistsException
-import ru.kiporskiy.tgbot.librarian.simple.exception.BookCategoryLoopException
-import ru.kiporskiy.tgbot.librarian.simple.exception.BookCategoryTooDeepNestingExistsException
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.BookCategory
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryAlreadyExistsException
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryLoopException
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryTooDeepNestingExistsException
 import kotlin.test.assertEquals
 import kotlin.test.assertSame
-import ru.kiporskiy.tgbot.librarian.simple.elements.storage.impl.InMemoryBookCategoryRepository as repo
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl.InMemoryBookCategoryRepository as repo
 
 internal class InMemoryBookCategoryRepositoryTest {
 

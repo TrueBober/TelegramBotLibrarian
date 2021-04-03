@@ -1,12 +1,10 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage.impl
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import ru.kiporskiy.tgbot.librarian.getTestUser
-import ru.kiporskiy.tgbot.librarian.simple.elements.ReaderRole
-import ru.kiporskiy.tgbot.librarian.simple.elements.User
-import kotlin.random.Random
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.ReaderRole
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertSame

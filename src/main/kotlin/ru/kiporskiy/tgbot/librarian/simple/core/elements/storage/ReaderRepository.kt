@@ -1,7 +1,7 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage
 
-import ru.kiporskiy.tgbot.librarian.simple.elements.Reader
-import ru.kiporskiy.tgbot.librarian.simple.elements.User
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.Reader
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.User
 
 /**
  * Репозиторий для читателей

@@ -1,9 +1,9 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage.impl
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl
 
-import ru.kiporskiy.tgbot.librarian.simple.elements.Reader
-import ru.kiporskiy.tgbot.librarian.simple.elements.ReaderFactory
-import ru.kiporskiy.tgbot.librarian.simple.elements.User
-import ru.kiporskiy.tgbot.librarian.simple.elements.storage.ReaderRepository
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.Reader
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.ReaderFactory
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.User
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.ReaderRepository
 import java.util.concurrent.ConcurrentHashMap
 
 /**

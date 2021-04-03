@@ -1,4 +1,4 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements
+package ru.kiporskiy.tgbot.librarian.simple.core.elements
 
 /**
  * Читатель - основная "единица", которой оперирует бизнес логика.

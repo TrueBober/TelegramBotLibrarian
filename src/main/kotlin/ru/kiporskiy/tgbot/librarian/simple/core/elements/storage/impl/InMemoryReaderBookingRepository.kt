@@ -1,11 +1,11 @@
-package ru.kiporskiy.tgbot.librarian.simple.elements.storage.impl
+package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl
 
-import ru.kiporskiy.tgbot.librarian.simple.elements.Book
-import ru.kiporskiy.tgbot.librarian.simple.elements.Reader
-import ru.kiporskiy.tgbot.librarian.simple.elements.storage.BookRepository
-import ru.kiporskiy.tgbot.librarian.simple.elements.storage.ReaderBookRepository
-import ru.kiporskiy.tgbot.librarian.simple.elements.storage.ReaderRepository
-import ru.kiporskiy.tgbot.librarian.simple.exception.BookAlreadyBookingException
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.Book
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.Reader
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.BookRepository
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.ReaderBookRepository
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.ReaderRepository
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookAlreadyBookingException
 import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import java.util.*
