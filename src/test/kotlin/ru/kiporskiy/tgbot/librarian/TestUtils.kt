@@ -1,7 +1,7 @@
 package ru.kiporskiy.tgbot.librarian
 
-import ru.kiporskiy.tgbot.librarian.simple.core.elements.Book
-import ru.kiporskiy.tgbot.librarian.simple.core.elements.User
+import ru.kiporskiy.tgbot.librarian.core.elements.Book
+import ru.kiporskiy.tgbot.librarian.core.elements.User
 import java.time.Year
 import java.util.*
 import kotlin.random.Random
