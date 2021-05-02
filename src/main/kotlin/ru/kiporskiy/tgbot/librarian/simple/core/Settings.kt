@@ -1,4 +1,4 @@
-package ru.kiporskiy.tgbot.librarian.simple
+package ru.kiporskiy.tgbot.librarian.simple.core
 
 /**
  * Максимально допустимое количество родителей для категорий книг

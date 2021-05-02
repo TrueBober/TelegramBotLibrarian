@@ -5,11 +5,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import ru.kiporskiy.tgbot.librarian.simple.CATEGORY_BOOK_MAX_DEEP
+import ru.kiporskiy.tgbot.librarian.simple.core.CATEGORY_BOOK_MAX_DEEP
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.BookCategory
 import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryAlreadyExistsException
 import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryLoopException
 import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryTooDeepNestingExistsException
+import ru.kiporskiy.tgbot.librarian.simple.core.exception.CategoryNotFoundException
 import kotlin.test.assertEquals
 import kotlin.test.assertSame
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl.InMemoryBookCategoryRepository as repo
@@ -84,12 +85,60 @@ internal class InMemoryBookCategoryRepositoryTest {
 
     @Test
     @DisplayName("Ошибка при добавлении циклических зависимостей в репозиториях")
-    internal fun addCategory_categoryLoop() {
+    internal fun updateParent_categoryLoop() {
         val categoryA = repo.add("A", null)
         val categoryB = repo.add("B", categoryA)
         val categoryC = repo.add("C", null)
 
         repo.updateParent(categoryA, categoryC)
         assertThrows<BookCategoryLoopException> { repo.updateParent(categoryC, categoryB) }
+    }
+
+    @Test
+    @DisplayName("Ошибка при изменении родительской категории. Исходная категория не найдена")
+    internal fun updateParent_srcCategoryNotFound() {
+        val category = BookCategory(0, "")
+        val categoryA = repo.add("A", null)
+
+        assertThrows<CategoryNotFoundException> { repo.updateParent(category, categoryA) }
+    }
+
+    @Test
+    @DisplayName("Ошибка при изменении родительской категории. Целевая категория не найдена")
+    internal fun updateParent_targetCategoryNotFound() {
+        val category = BookCategory(0, "")
+        val categoryA = repo.add("A", null)
+
+        assertThrows<CategoryNotFoundException> { repo.updateParent(categoryA, category) }
+    }
+
+    @Test
+    @DisplayName("Смена названия категории")
+    internal fun updateName_ok() {
+        val categoryName = "Test"
+        val category = repo.add("A", null)
+        repo.updateName(category, categoryName)
+
+        val resultCategory = repo.findById(category.id)
+        assertEquals(categoryName, resultCategory!!.name)
+    }
+
+    @Test
+    @DisplayName("Смена названия категории запрещена, т.к. категория с таким названием уже есть")
+    internal fun updateName_alreadyExists() {
+        val categoryA = repo.add("A", null)
+        val categoryB = repo.add("B", null)
+        assertThrows<BookCategoryAlreadyExistsException> {
+            repo.updateName(categoryA, categoryB.name)
+        }
+    }
+
+    @Test
+    @DisplayName("Категория для смены названия не найдена")
+    internal fun updateName_notFound() {
+        val category = BookCategory(0, "")
+        assertThrows<CategoryNotFoundException> {
+            repo.updateName(category, "Test")
+        }
     }
 }

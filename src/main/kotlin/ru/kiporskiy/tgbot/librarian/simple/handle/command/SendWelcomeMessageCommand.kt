@@ -1,6 +1,8 @@
 package ru.kiporskiy.tgbot.librarian.simple.handle.command
 
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.Reader
+import ru.kiporskiy.tgbot.librarian.simple.handle.request.ReaderRequest
+import ru.kiporskiy.tgbot.librarian.simple.handle.request.impl.StartDiscussionReaderRequest
 import ru.kiporskiy.tgbot.librarian.simple.transport.Sender
 import ru.kiporskiy.tgbot.librarian.simple.transport.message.TextMessage
 
@@ -21,5 +23,10 @@ class SendWelcomeMessageCommand(private val sender: Sender, private val reader: 
         val textMessage = TextMessage(message, reader)
         sender.sendTextMessage(textMessage)
     }
+
+    /**
+     * Текущая команда предназначена для обработки на запрос создания новой беседы между пользователем и ботом
+     */
+    override fun getRequest() = StartDiscussionReaderRequest
 
 }

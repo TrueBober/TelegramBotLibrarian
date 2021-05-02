@@ -2,6 +2,7 @@ package ru.kiporskiy.tgbot.librarian.simple.handle
 
 import ru.kiporskiy.tgbot.librarian.simple.handle.command.Command
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.Reader
+import ru.kiporskiy.tgbot.librarian.simple.core.elements.User
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.BookCategoryRepository
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.BookRepository
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.ReaderBookRepository
@@ -10,7 +11,11 @@ import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl.InMemoryBo
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl.InMemoryBookRepository
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl.InMemoryReaderBookingRepository
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl.InMemoryReaderRepository
+import ru.kiporskiy.tgbot.librarian.simple.event.Event
+import ru.kiporskiy.tgbot.librarian.simple.event.OnCommandEvent
+import ru.kiporskiy.tgbot.librarian.simple.event.OnContextMessageEvent
 import ru.kiporskiy.tgbot.librarian.simple.handle.command.SendWelcomeMessageCommand
+import ru.kiporskiy.tgbot.librarian.simple.handle.request.ReaderRequest
 import ru.kiporskiy.tgbot.librarian.simple.transport.Sender
 import ru.kiporskiy.tgbot.librarian.simple.transport.TelegramSender
 
@@ -18,6 +23,7 @@ import ru.kiporskiy.tgbot.librarian.simple.transport.TelegramSender
  * Обработчик всех запросов
  */
 object Handler {
+    private const val START_COMMAND_TEXT = "/start"
 
     /**
      * Отправитель сообщений пользователю
@@ -56,9 +62,31 @@ object Handler {
         this.readerRepo = InMemoryReaderRepository
     }
 
+    fun handleEvent(event: Event) {
+        val reader = getReader(event.user)
+
+        when (event) {
+            is OnCommandEvent -> handleCommand(reader, event.command)
+            is OnContextMessageEvent -> onStart(reader)
+        }
+    }
+
+    /**
+     * Преобразовать пользователя в читателя
+     */
+    private fun getReader(user: User) = this.readerRepo.getReader(user)
+
+    /**
+     * Обработать команду, полученную от пользователя
+     */
+    private fun handleCommand(reader: Reader, command: String) {
+        when (command) {
+            START_COMMAND_TEXT -> onStart(reader)
+        }
+    }
 
     /**
      * Событие о том, что пользователь инициировал "начало" общения с ботом преобразовать в команду
      */
-    fun onStart(reader: Reader): Command = SendWelcomeMessageCommand(sender, reader)
+    private fun onStart(reader: Reader): Command = SendWelcomeMessageCommand(sender, reader)
 }

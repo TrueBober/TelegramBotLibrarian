@@ -1,6 +1,6 @@
 package ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.impl
 
-import ru.kiporskiy.tgbot.librarian.simple.CATEGORY_BOOK_MAX_DEEP
+import ru.kiporskiy.tgbot.librarian.simple.core.CATEGORY_BOOK_MAX_DEEP
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.BookCategory
 import ru.kiporskiy.tgbot.librarian.simple.core.elements.storage.BookCategoryRepository
 import ru.kiporskiy.tgbot.librarian.simple.core.exception.BookCategoryAlreadyExistsException
@@ -80,7 +80,7 @@ object InMemoryBookCategoryRepository : BookCategoryRepository {
         if (existsCategory != null)
             throw BookCategoryAlreadyExistsException(existsCategory)
 
-        if (allCategories.contains(src))
+        if (!allCategories.contains(src))
         //обновляемая категория не найдена
             throw CategoryNotFoundException(src)
 
