@@ -15,6 +15,10 @@ import ru.kiporskiy.tgbot.librarian.event.Event
 import ru.kiporskiy.tgbot.librarian.event.OnCommandEvent
 import ru.kiporskiy.tgbot.librarian.event.OnContextMessageEvent
 import ru.kiporskiy.tgbot.librarian.handle.command.SendWelcomeMessageCommand
+import ru.kiporskiy.tgbot.librarian.handle.request.ReaderRequest
+import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCommandsListReaderRequest
+import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
+import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
 import ru.kiporskiy.tgbot.librarian.transport.Sender
 import ru.kiporskiy.tgbot.librarian.transport.TelegramSender
 
@@ -49,6 +53,12 @@ object Handler {
      */
     private lateinit var readerRepo: ReaderRepository
 
+    /**
+     * Список всех возможных запросов
+     */
+    private val accessibleRequests: List<ReaderRequest> =
+        listOf(StartDiscussionReaderRequest, GetCommandsListReaderRequest)
+
 
     /**
      * Инициализация с репозиториями по умолчанию (все хранится в памяти)
@@ -79,9 +89,18 @@ object Handler {
      * Обработать команду, полученную от пользователя
      */
     private fun handleCommand(reader: Reader, command: String) {
-        when (command) {
-            START_COMMAND_TEXT -> onStart(reader)
+        val request = commandToRequest(command)
+
+        when (request) {
+            is StartDiscussionReaderRequest -> onStart(reader)
         }
+    }
+
+    /**
+     * Преобразовать команду пользователя в запрос
+     */
+    private fun commandToRequest(userCommand: String): ReaderRequest {
+        return this.accessibleRequests.firstOrNull { it.isCommand(userCommand) } ?: UnknownReaderRequest
     }
 
     /**

@@ -4,15 +4,13 @@ import ru.kiporskiy.tgbot.librarian.core.elements.ReaderRole
 import ru.kiporskiy.tgbot.librarian.handle.request.AbstractReaderRequest
 
 /**
- * Запрос получения списка доступных команд
+ * Неизвестный запрос
  */
-object GetCommandsListReaderRequest : AbstractReaderRequest() {
+object UnknownReaderRequest : AbstractReaderRequest() {
 
-    private const val command = "/get_commands"
+    private const val description = "неизвестная команда"
 
-    private const val description = "получить список команд, доступных пользователю"
-
-    override fun getCommand() = command
+    override fun getCommand() = ""
 
     override fun getDescription() = description
 

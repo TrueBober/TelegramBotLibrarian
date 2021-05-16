@@ -3,6 +3,9 @@ package ru.kiporskiy.tgbot.librarian.handle.request.impl
 import ru.kiporskiy.tgbot.librarian.core.elements.ReaderRole
 import ru.kiporskiy.tgbot.librarian.handle.request.AbstractReaderRequest
 
+/**
+ * Запрос на начало работы с ботом
+ */
 object StartDiscussionReaderRequest : AbstractReaderRequest() {
 
     private const val command = "/start"
