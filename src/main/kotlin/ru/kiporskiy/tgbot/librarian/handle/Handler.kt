@@ -89,7 +89,7 @@ object Handler {
      * Обработать команду, полученную от пользователя
      */
     private fun handleCommand(reader: Reader, command: String) {
-        //преобразовать коианду пользователя в запрос
+        //преобразовать команду пользователя в запрос
         val request = commandToRequest(command)
 
         val context: Context? =

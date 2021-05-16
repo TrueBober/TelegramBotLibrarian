@@ -13,7 +13,7 @@ import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 
 object TelegramSender : Sender {
 
-    lateinit var bot: TelegramBot
+    private lateinit var bot: TelegramBot
 
     fun init(token: String) {
         this.bot = TelegramBot(token)
