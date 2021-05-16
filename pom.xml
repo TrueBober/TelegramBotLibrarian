@@ -15,8 +15,8 @@
         <kotlin.version>1.5.0</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
         <junit.version>5.7.1</junit.version>
-        <botapi.version>5.0.1</botapi.version>
-        <jackson.databind>2.12.1</jackson.databind>
+        <botapi.version>5.1.0</botapi.version>
+        <jackson.databind>2.12.3</jackson.databind>
     </properties>
 
     <dependencies>
