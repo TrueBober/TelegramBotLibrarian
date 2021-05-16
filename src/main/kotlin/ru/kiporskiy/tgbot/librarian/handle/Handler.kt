@@ -1,6 +1,7 @@
 package ru.kiporskiy.tgbot.librarian.handle
 
-import ru.kiporskiy.tgbot.librarian.handle.command.Command
+import ru.kiporskiy.tgbot.librarian.core.Context
+import ru.kiporskiy.tgbot.librarian.core.elements.ContextManager
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.User
 import ru.kiporskiy.tgbot.librarian.core.elements.storage.BookCategoryRepository
@@ -13,7 +14,8 @@ import ru.kiporskiy.tgbot.librarian.core.elements.storage.impl.InMemoryReaderBoo
 import ru.kiporskiy.tgbot.librarian.core.elements.storage.impl.InMemoryReaderRepository
 import ru.kiporskiy.tgbot.librarian.event.Event
 import ru.kiporskiy.tgbot.librarian.event.OnCommandEvent
-import ru.kiporskiy.tgbot.librarian.event.OnContextMessageEvent
+import ru.kiporskiy.tgbot.librarian.handle.command.SendCommandsListCommand
+import ru.kiporskiy.tgbot.librarian.handle.command.SendUnknownRequestMessageCommand
 import ru.kiporskiy.tgbot.librarian.handle.command.SendWelcomeMessageCommand
 import ru.kiporskiy.tgbot.librarian.handle.request.ReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCommandsListReaderRequest
@@ -26,7 +28,6 @@ import ru.kiporskiy.tgbot.librarian.transport.TelegramSender
  * Обработчик всех запросов
  */
 object Handler {
-    private const val START_COMMAND_TEXT = "/start"
 
     /**
      * Отправитель сообщений пользователю
@@ -56,7 +57,7 @@ object Handler {
     /**
      * Список всех возможных запросов
      */
-    private val accessibleRequests: List<ReaderRequest> =
+    val accessibleRequests: List<ReaderRequest> =
         listOf(StartDiscussionReaderRequest, GetCommandsListReaderRequest)
 
 
@@ -76,7 +77,6 @@ object Handler {
 
         when (event) {
             is OnCommandEvent -> handleCommand(reader, event.command)
-            is OnContextMessageEvent -> onStart(reader)
         }
     }
 
@@ -89,11 +89,27 @@ object Handler {
      * Обработать команду, полученную от пользователя
      */
     private fun handleCommand(reader: Reader, command: String) {
+        //преобразовать коианду пользователя в запрос
         val request = commandToRequest(command)
 
-        when (request) {
-            is StartDiscussionReaderRequest -> onStart(reader)
-        }
+        val context: Context? =
+            if (request.isWithContext()) {
+                //найти контекст запроса
+                ContextManager.getContext(reader)
+            } else {
+                //если запрос не требует контекста - очистить контекст
+                ContextManager.clearContext(reader)
+                null
+            }
+
+        val cmd =
+            when (request) {
+                is StartDiscussionReaderRequest -> SendWelcomeMessageCommand(sender, reader)
+                is GetCommandsListReaderRequest -> SendCommandsListCommand(sender, reader)
+                else -> SendUnknownRequestMessageCommand(sender, reader)
+            }
+
+        cmd.execute()
     }
 
     /**
@@ -102,9 +118,4 @@ object Handler {
     private fun commandToRequest(userCommand: String): ReaderRequest {
         return this.accessibleRequests.firstOrNull { it.isCommand(userCommand) } ?: UnknownReaderRequest
     }
-
-    /**
-     * Событие о том, что пользователь инициировал "начало" общения с ботом преобразовать в команду
-     */
-    private fun onStart(reader: Reader): Command = SendWelcomeMessageCommand(sender, reader)
 }
