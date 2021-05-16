@@ -14,7 +14,7 @@ import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 class SendUnknownRequestMessageCommand(private val sender: Sender, private val reader: Reader) : Command {
 
     companion object {
-        const val message = "Неизвестная команда. Для получения списка команд отправьте /get_command из любого меню"
+        const val message = "Неизвестная команда. Для получения списка команд отправьте /get_commands из любого меню"
     }
 
     override fun execute() {

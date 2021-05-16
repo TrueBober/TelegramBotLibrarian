@@ -15,7 +15,7 @@ class SendWelcomeMessageCommand(private val sender: Sender, private val reader: 
 
     companion object {
         const val message = "Приветствую. Я - бот-библиотекарь. С моей помощью Вы сможете забронировать книгу. Для " +
-                "получения списка команд отправьте команду /get_command из любого меню"
+                "получения списка команд отправьте команду /get_commands из любого меню"
     }
 
     override fun execute() {

@@ -35,7 +35,7 @@ object TelegramSender : Sender {
     }
 
     private fun telegramUserToApplicationUser(tgUser: com.pengrad.telegrambot.model.User): User {
-        return User(tgUser.id(), tgUser.username(), tgUser.firstName(), tgUser.lastName())
+        return User(tgUser.id(), tgUser.username() ?: "", tgUser.firstName() ?: "", tgUser.lastName() ?: "")
     }
 
     private fun processTextMessage(user: User, text: String) {
