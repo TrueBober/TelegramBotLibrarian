@@ -1,7 +1,11 @@
 package ru.kiporskiy.tgbot.librarian
 
 import ru.kiporskiy.tgbot.librarian.core.elements.Book
+import ru.kiporskiy.tgbot.librarian.core.elements.Reader
+import ru.kiporskiy.tgbot.librarian.core.elements.ReaderRole
 import ru.kiporskiy.tgbot.librarian.core.elements.User
+import ru.kiporskiy.tgbot.librarian.transport.Sender
+import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 import java.time.Year
 import java.util.*
 import kotlin.random.Random
@@ -23,3 +27,34 @@ fun getTestUser(
 ): User {
     return User(id, username, firstname, lastname)
 }
+
+fun getTestReader(
+    id: Long = Random.nextLong(),
+    readerRole: ReaderRole = ReaderRole.USER,
+    userId: Int = Random.nextInt(),
+    username: String = "username ${Random.nextInt()}",
+    firstname: String = "firstname ${Random.nextInt()}",
+    lastname: String = "lastname ${Random.nextInt()}"
+): Reader {
+    val user = getTestUser(userId, username, firstname, lastname)
+    return Reader(id, user, readerRole)
+}
+
+/**
+ * Тестовый "отправитель" сообщений.
+ * Складывает все отправленные сообщения в список.
+ */
+class TestSender: Sender {
+
+    var sentMessages: List<TextMessage> = LinkedList()
+
+    override fun sendTextMessage(message: TextMessage) {
+        this.sentMessages += message
+    }
+
+}
+
+/**
+ * Получить тестового отправителя сообщений
+ */
+fun getTestSender() = TestSender()
