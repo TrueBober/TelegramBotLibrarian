@@ -16,15 +16,9 @@ import ru.kiporskiy.tgbot.librarian.core.elements.storage.impl.InMemoryReaderRep
 import ru.kiporskiy.tgbot.librarian.event.Event
 import ru.kiporskiy.tgbot.librarian.event.OnCommandEvent
 import ru.kiporskiy.tgbot.librarian.event.OnContextMessageEvent
-import ru.kiporskiy.tgbot.librarian.handle.command.AddCategoryCommand
-import ru.kiporskiy.tgbot.librarian.handle.command.SendCommandsListCommand
-import ru.kiporskiy.tgbot.librarian.handle.command.SendUnknownRequestMessageCommand
-import ru.kiporskiy.tgbot.librarian.handle.command.SendWelcomeMessageCommand
+import ru.kiporskiy.tgbot.librarian.handle.command.*
 import ru.kiporskiy.tgbot.librarian.handle.request.ReaderRequest
-import ru.kiporskiy.tgbot.librarian.handle.request.impl.AddBookCategoryRequest
-import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCommandsListReaderRequest
-import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
-import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
+import ru.kiporskiy.tgbot.librarian.handle.request.impl.*
 import ru.kiporskiy.tgbot.librarian.transport.Sender
 import ru.kiporskiy.tgbot.librarian.transport.TelegramSender
 
@@ -62,7 +56,12 @@ object Handler {
      * Список всех возможных запросов
      */
     val accessibleRequests: List<ReaderRequest> =
-        listOf(StartDiscussionReaderRequest, GetCommandsListReaderRequest, AddBookCategoryRequest)
+        listOf(
+            StartDiscussionReaderRequest,
+            GetCommandsListReaderRequest,
+            AddBookCategoryRequest,
+            GetCategoriesListReaderRequest
+        )
 
 
     /**
@@ -112,6 +111,7 @@ object Handler {
             is StartDiscussionReaderRequest -> SendWelcomeMessageCommand(sender, reader).execute()
             is GetCommandsListReaderRequest -> SendCommandsListCommand(sender, reader).execute()
             is AddBookCategoryRequest -> AddCategoryCommand(sender, reader, InMemoryBookCategoryRepository).execute()
+            is GetCategoriesListReaderRequest -> GetCategoriesCommand(sender, reader, InMemoryBookCategoryRepository).execute()
             else -> SendUnknownRequestMessageCommand(sender, reader).execute()
         }
     }
