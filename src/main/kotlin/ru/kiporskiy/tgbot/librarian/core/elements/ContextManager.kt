@@ -1,6 +1,7 @@
 package ru.kiporskiy.tgbot.librarian.core.elements
 
 import ru.kiporskiy.tgbot.librarian.core.Context
+import ru.kiporskiy.tgbot.librarian.core.EmptyContext
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -16,7 +17,7 @@ object ContextManager {
     /**
      * Получить контекст пользователя
      */
-    fun getContext(reader: Reader): Context? = readerContexts[reader.id]
+    fun getContext(reader: Reader): Context = readerContexts[reader.id] ?: EmptyContext
 
     /**
      * Получить контекст пользователя

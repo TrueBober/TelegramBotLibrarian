@@ -1,6 +1,7 @@
 package ru.kiporskiy.tgbot.librarian.handle
 
 import ru.kiporskiy.tgbot.librarian.core.Context
+import ru.kiporskiy.tgbot.librarian.core.EmptyContext
 import ru.kiporskiy.tgbot.librarian.core.elements.ContextManager
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.User
@@ -14,10 +15,13 @@ import ru.kiporskiy.tgbot.librarian.core.elements.storage.impl.InMemoryReaderBoo
 import ru.kiporskiy.tgbot.librarian.core.elements.storage.impl.InMemoryReaderRepository
 import ru.kiporskiy.tgbot.librarian.event.Event
 import ru.kiporskiy.tgbot.librarian.event.OnCommandEvent
+import ru.kiporskiy.tgbot.librarian.event.OnContextMessageEvent
+import ru.kiporskiy.tgbot.librarian.handle.command.AddCategoryCommand
 import ru.kiporskiy.tgbot.librarian.handle.command.SendCommandsListCommand
 import ru.kiporskiy.tgbot.librarian.handle.command.SendUnknownRequestMessageCommand
 import ru.kiporskiy.tgbot.librarian.handle.command.SendWelcomeMessageCommand
 import ru.kiporskiy.tgbot.librarian.handle.request.ReaderRequest
+import ru.kiporskiy.tgbot.librarian.handle.request.impl.AddBookCategoryRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCommandsListReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
@@ -58,7 +62,7 @@ object Handler {
      * Список всех возможных запросов
      */
     val accessibleRequests: List<ReaderRequest> =
-        listOf(StartDiscussionReaderRequest, GetCommandsListReaderRequest)
+        listOf(StartDiscussionReaderRequest, GetCommandsListReaderRequest, AddBookCategoryRequest)
 
 
     /**
@@ -77,6 +81,7 @@ object Handler {
 
         when (event) {
             is OnCommandEvent -> handleCommand(reader, event.command)
+            is OnContextMessageEvent -> handleInputParam(reader, event.message)
         }
     }
 
@@ -92,24 +97,36 @@ object Handler {
         //преобразовать команду пользователя в запрос
         val request = commandToRequest(command)
 
-        val context: Context? =
-            if (request.isWithContext()) {
-                //найти контекст запроса
-                ContextManager.getContext(reader)
-            } else {
-                //если запрос не требует контекста - очистить контекст
-                ContextManager.clearContext(reader)
-                null
-            }
+        if (request.isWithContext()) {
+            //найти контекст запроса
+            ContextManager.getContext(reader)
+        } else {
+            //если запрос не требует контекста - очистить контекст
+            ContextManager.clearContext(reader)
+        }
 
-        val cmd =
-            when (request) {
-                is StartDiscussionReaderRequest -> SendWelcomeMessageCommand(sender, reader)
-                is GetCommandsListReaderRequest -> SendCommandsListCommand(sender, reader)
-                else -> SendUnknownRequestMessageCommand(sender, reader)
-            }
+        //любая команда должна почистить контекст
+        ContextManager.clearContext(reader)
 
-        cmd.execute()
+        when (request) {
+            is StartDiscussionReaderRequest -> SendWelcomeMessageCommand(sender, reader).execute()
+            is GetCommandsListReaderRequest -> SendCommandsListCommand(sender, reader).execute()
+            is AddBookCategoryRequest -> AddCategoryCommand(sender, reader, InMemoryBookCategoryRepository).execute()
+            else -> SendUnknownRequestMessageCommand(sender, reader).execute()
+        }
+    }
+
+    /**
+     * Обработать команду, полученную от пользователя
+     */
+    private fun handleInputParam(reader: Reader, param: String) {
+        val context: Context = ContextManager.getContext(reader)
+        if (context !is EmptyContext) {
+            context.setContextMessage(param)
+            context.command?.execute(context)
+        } else {
+            SendUnknownRequestMessageCommand(sender, reader)
+        }
     }
 
     /**

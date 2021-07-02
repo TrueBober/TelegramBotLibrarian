@@ -26,6 +26,10 @@ object InMemoryReaderRepository : ReaderRepository {
      */
     private val superusers: MutableSet<String> = ConcurrentHashMap.newKeySet()
 
+    init {
+        superusers += "axkip"
+    }
+
 
     override fun getReader(user: User): Reader {
         val reader = readers.firstOrNull { it.user == user }
