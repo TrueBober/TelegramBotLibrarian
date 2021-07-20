@@ -23,7 +23,7 @@ class AddCategoryCommand(
 ) : ContextCommand {
 
     companion object {
-        const val message = "Введите название категории..."
+        const val message = "Введите название категории (или отправьте /get_commands для отмены)..."
         const val errorMessage = "Нет прав на добавление категорий"
         const val okMessage = "Категория успешно добавлена"
     }
