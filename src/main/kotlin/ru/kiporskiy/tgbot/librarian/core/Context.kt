@@ -1,6 +1,5 @@
 package ru.kiporskiy.tgbot.librarian.core
 
-import ru.kiporskiy.tgbot.librarian.handle.command.Command
 import ru.kiporskiy.tgbot.librarian.handle.command.ContextCommand
 
 /**

@@ -64,7 +64,7 @@ object TelegramSender : Sender {
      */
     private fun telegramUserToApplicationUser(tgUser: com.pengrad.telegrambot.model.User): User {
         return User(
-            tgUser.id(),
+            tgUser.id().toInt(),
             tgUser.username() ?: "",
             tgUser.firstName() ?: "",
             tgUser.lastName() ?: ""

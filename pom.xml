@@ -12,12 +12,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.5.0</kotlin.version>
+        <kotlin.version>1.5.30</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <junit.version>5.7.1</junit.version>
-        <botapi.version>5.1.0</botapi.version>
-        <jackson.databind>2.12.3</jackson.databind>
-        <mockito.version>1.6.0</mockito.version>
+        <junit.version>5.8.0</junit.version>
+        <botapi.version>5.2.0</botapi.version>
+        <jackson.databind>2.12.5</jackson.databind>
+        <mockito.version>2.2.0</mockito.version>
     </properties>
 
     <dependencies>
@@ -54,9 +54,9 @@
             <version>${jackson.databind}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.nhaarman/mockito-kotlin -->
+        <!-- https://mvnrepository.com/artifact/com.nhaarman.mockitokotlin2/mockito-kotlin -->
         <dependency>
-            <groupId>com.nhaarman</groupId>
+            <groupId>com.nhaarman.mockitokotlin2</groupId>
             <artifactId>mockito-kotlin</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
