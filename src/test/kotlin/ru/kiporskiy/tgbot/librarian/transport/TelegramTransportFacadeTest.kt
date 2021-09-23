@@ -1,13 +1,16 @@
 package ru.kiporskiy.tgbot.librarian.transport
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
 import com.pengrad.telegrambot.TelegramBot
+import com.pengrad.telegrambot.UpdatesListener
+import com.pengrad.telegrambot.model.Message
+import com.pengrad.telegrambot.model.MessageEntity
+import com.pengrad.telegrambot.model.Update
 import com.pengrad.telegrambot.request.SendMessage
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import kotlin.test.assertTrue
 
 /**
  * Тестирование класса для взаимодействия с botapi телеграма.
@@ -42,5 +45,52 @@ internal class TelegramTransportFacadeTest {
         val chatId = UsernameTelegramChatId("id")
         transport.sendMessage(chatId, text)
         verify(bot).execute(any<SendMessage>())
+    }
+
+    @Test
+    @DisplayName("Тестирование функции добавления слушателя на событие о получении команды для бота от телеграма")
+    internal fun addOnTextMessageListener() {
+        var success = false
+
+        //параметры сообщения
+        val title = "/command"
+        val param1 = "argument1"
+        val param2 = "argument2"
+        val command = "$title $param1 $param2"
+        val task: (TelegramCommand) -> Unit = {
+            success = it.title == title && it.args == listOf(param1, param2)
+        }
+
+        //замокать обновление
+        val update = this.mockMessageUpdate(command, 0, title.length, MessageEntity.Type.bot_command)
+
+        var botapiUpdateListener: UpdatesListener? = null
+        doAnswer {
+            botapiUpdateListener = it.getArgument(0) as UpdatesListener
+        }.whenever(bot).setUpdatesListener(any())
+
+        //повторная инициализация, чтобы добавить слушателя, созданного выше
+        transport = TelegramTransportFacade(bot)
+
+        transport.addOnTextMessageListener(task)
+
+        botapiUpdateListener?.process(listOf(update))
+
+        assertTrue { success }
+    }
+
+    private fun mockMessageUpdate(text: String, entityStart: Int = 0, entityEnd: Int = 0, entityType: MessageEntity.Type?): Update {
+        val update = mock<Update>()
+        val message = mock<Message>()
+        doReturn(message).whenever(update).message()
+        doReturn(text).whenever(message).text()
+        if (entityType != null) {
+            val messageEntity = mock<MessageEntity>()
+            doReturn(arrayOf(messageEntity)).whenever(message).entities()
+            doReturn(entityStart).whenever(messageEntity).offset()
+            doReturn(entityEnd).whenever(messageEntity).length()
+            doReturn(entityType).whenever(messageEntity).type()
+        }
+        return update
     }
 }

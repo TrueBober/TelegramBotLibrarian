@@ -67,13 +67,13 @@ class TelegramTransportFacade(private val bot: TelegramBot) {
     private fun getCommand(message: Message): TelegramCommand {
         val commandPosition = message.entities().first()
         val commandPositionStart = commandPosition.offset()
-        val commandPositionEnd = commandPosition.offset() + commandPosition.length() + 1
+        val commandPositionEnd = commandPosition.offset() + commandPosition.length()
         val command = message.text().substring(commandPositionStart, commandPositionEnd)
 
         if (message.text().length == command.length) {
             return TelegramCommand(command, listOf())
         } else {
-            val arguments = message.text().substring(commandPositionEnd).split(" ")
+            val arguments = message.text().substring(commandPositionEnd).trim().split(" ")
             return TelegramCommand(command, arguments)
         }
     }
