@@ -3,6 +3,7 @@ package ru.kiporskiy.tgbot.librarian.transport
 import com.nhaarman.mockitokotlin2.*
 import com.pengrad.telegrambot.TelegramBot
 import com.pengrad.telegrambot.UpdatesListener
+import com.pengrad.telegrambot.model.Chat
 import com.pengrad.telegrambot.model.Message
 import com.pengrad.telegrambot.model.MessageEntity
 import com.pengrad.telegrambot.model.Update
@@ -42,14 +43,13 @@ internal class TelegramTransportFacadeTest {
     @DisplayName("Отправить простое текстовое сообщение")
     internal fun sendMessage_text() {
         val text = "Text"
-        val chatId = UsernameTelegramChatId("id")
-        transport.sendMessage(chatId, text)
+        transport.sendMessage(123L, text)
         verify(bot).execute(any<SendMessage>())
     }
 
     @Test
     @DisplayName("Тестирование функции добавления слушателя на событие о получении команды для бота от телеграма")
-    internal fun addOnTextMessageListener() {
+    internal fun addOnCommandListener() {
         var success = false
 
         //параметры сообщения
@@ -58,7 +58,7 @@ internal class TelegramTransportFacadeTest {
         val param2 = "argument2"
         val command = "$title $param1 $param2"
         val task: (TelegramCommand) -> Unit = {
-            success = it.title == title && it.args == listOf(param1, param2)
+            success = it.command == title && it.args == listOf(param1, param2)
         }
 
         //замокать обновление
@@ -72,7 +72,7 @@ internal class TelegramTransportFacadeTest {
         //повторная инициализация, чтобы добавить слушателя, созданного выше
         transport = TelegramTransportFacade(bot)
 
-        transport.addOnTextMessageListener(task)
+        transport.addOnCommandListener(task)
 
         botapiUpdateListener?.process(listOf(update))
 
@@ -80,10 +80,16 @@ internal class TelegramTransportFacadeTest {
     }
 
     private fun mockMessageUpdate(text: String, entityStart: Int = 0, entityEnd: Int = 0, entityType: MessageEntity.Type?): Update {
+        val chatId = 1000L
+        val chat = mock<Chat>()
+        doReturn(chatId).whenever(chat).id()
+        doReturn(Chat.Type.channel).whenever(chat).type()
+
         val update = mock<Update>()
         val message = mock<Message>()
         doReturn(message).whenever(update).message()
         doReturn(text).whenever(message).text()
+        doReturn(chat).whenever(message).chat()
         if (entityType != null) {
             val messageEntity = mock<MessageEntity>()
             doReturn(arrayOf(messageEntity)).whenever(message).entities()
