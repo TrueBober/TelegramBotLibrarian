@@ -57,7 +57,7 @@ internal class TelegramTransportFacadeTest {
         val param1 = "argument1"
         val param2 = "argument2"
         val command = "$title $param1 $param2"
-        val task: (TelegramCommand) -> Unit = {
+        val task: (MessengerTransport.MessengerCommand) -> Unit = {
             success = it.command == title && it.args == listOf(param1, param2)
         }
 

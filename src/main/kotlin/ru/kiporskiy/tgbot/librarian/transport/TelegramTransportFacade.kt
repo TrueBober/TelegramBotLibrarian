@@ -10,16 +10,16 @@ import com.pengrad.telegrambot.request.SendMessage
 /**
  * Класс для взаимодействия с ботапи телеграма.
  */
-class TelegramTransportFacade(private val bot: TelegramBot) {
+class TelegramTransportFacade(private val bot: TelegramBot): MessengerTransport {
 
     /**
      * Слушатели для команд, поступающих для бота
      */
-    private val commandsListener: MutableList<(TelegramCommand) -> Unit> = mutableListOf()
+    private val commandsListener: MutableList<(MessengerTransport.MessengerCommand) -> Unit> = mutableListOf()
     /**
      * Слушатели для сообщений (кроме команд), поступающих от бота
      */
-    private val messagesListener: MutableList<(TelegramMessage) -> Unit> = mutableListOf()
+    private val messagesListener: MutableList<(MessengerTransport.MessengerTextMessage) -> Unit> = mutableListOf()
 
     init {
         this.bot.setUpdatesListener { updatesListener(it) }
@@ -66,15 +66,15 @@ class TelegramTransportFacade(private val bot: TelegramBot) {
     /**
      * Получить команду с аргументами
      */
-    private fun getCommand(message: Message): TelegramCommand {
+    private fun getCommand(message: Message): MessengerTransport.MessengerCommand {
         val command = getMessageEntityText(message, message.entities().first())
-        val chat = TelegramChat.of(message.chat())
+        val chat = convertToChatId(message.chat())
 
         if (message.text().length == command.length) {
-            return TelegramCommand(chat, command, listOf())
+            return MessengerTransport.MessengerCommand(chat, command, listOf())
         } else {
             val arguments = message.text().substring(command.length).trim().split(" ")
-            return TelegramCommand(chat, command, arguments)
+            return MessengerTransport.MessengerCommand(chat, command, arguments)
         }
     }
 
@@ -87,10 +87,10 @@ class TelegramTransportFacade(private val bot: TelegramBot) {
     /**
      * Получить тексотвое сообщение
      */
-    private fun getMessage(message: Message): TelegramMessage {
+    private fun getMessage(message: Message): MessengerTransport.MessengerTextMessage {
         val text = message.text()
-        val chat = TelegramChat.of(message.chat())
-        return TelegramMessage(chat, text)
+        val chat = convertToChatId(message.chat())
+        return MessengerTransport.MessengerTextMessage(chat, text)
     }
 
     /**
@@ -104,50 +104,25 @@ class TelegramTransportFacade(private val bot: TelegramBot) {
     /**
      * Отправка простого текстового сообщения
      */
-    fun sendMessage(chat: TelegramChat, text: String) {
-        sendMessage(chat.id, text)
+    override fun sendMessage(chatId: MessengerTransport.MessengerChatId, text: String) {
+        val request = SendMessage(chatId.getId(), text)
+        bot.execute(request)
     }
 
-    /**
-     * Добавить слушателя для команд, получаемых из телеграма
-     */
-    fun addOnCommandListener(listener: (TelegramCommand) -> Unit) {
+    override fun addOnCommandListener(listener: (MessengerTransport.MessengerCommand) -> Unit) {
         this.commandsListener += listener
     }
 
-    /**
-     * Добавить слушателя для команд, получаемых из телеграма
-     */
-    fun addOnMessageListener(listener: (TelegramMessage) -> Unit) {
+    override fun addOnMessageListener(listener: (MessengerTransport.MessengerTextMessage) -> Unit) {
         this.messagesListener += listener
     }
-}
 
-/**
- * Команда, полученная из телеграма
- */
-data class TelegramCommand(val chat: TelegramChat, val command: String, val args: List<String>)
-
-/**
- * Сообщение, полученное из телеграма
- */
-data class TelegramMessage(val chat: TelegramChat, val message: String)
-
-/**
- * Описание чата телеграма
- */
-sealed interface TelegramChat {
-
-    val id: Long
-
-    companion object {
-        fun of(chat: Chat): TelegramChat {
-            return when(chat.type()) {
-                Chat.Type.Private -> TelegramPrivateChat(chat.id(), chat.firstName(), chat.lastName(), chat.username())
-                Chat.Type.group -> TelegramGroupChat(chat.id(), chat.title())
-                Chat.Type.channel -> TelegramChannelChat(chat.id(), chat.title(), chat.username())
-                Chat.Type.supergroup -> TelegramSupergroupChat(chat.id(), chat.title(), chat.username())
-            }
+    private fun convertToChatId(chat: Chat): MessengerTransport.MessengerChatId {
+        return when(chat.type()) {
+            Chat.Type.Private -> TelegramPrivateChat(chat.id(), chat.firstName(), chat.lastName(), chat.username())
+            Chat.Type.group -> TelegramGroupChat(chat.id(), chat.title())
+            Chat.Type.channel -> TelegramChannelChat(chat.id(), chat.title(), chat.username())
+            Chat.Type.supergroup -> TelegramSupergroupChat(chat.id(), chat.title(), chat.username())
         }
     }
 }
@@ -156,34 +131,42 @@ sealed interface TelegramChat {
  * Чат 1 на 1 с пользователем
  */
 data class TelegramPrivateChat(
-    override val id: Long,
+    val id: Long,
     val firstName: String?,
     val lastName: String?,
     val username: String?
-) : TelegramChat
+) : MessengerTransport.MessengerChatId {
+    override fun getId() = id
+}
 
 /**
  * Групповой чат
  */
 data class TelegramGroupChat(
-    override val id: Long,
+    val id: Long,
     val title: String?
-) : TelegramChat
+) : MessengerTransport.MessengerChatId {
+    override fun getId() = id
+}
 
 /**
  * Чат с супергруппой
  */
 data class TelegramSupergroupChat(
-    override val id: Long,
+    val id: Long,
     val title: String?,
     val username: String?
-) : TelegramChat
+) : MessengerTransport.MessengerChatId {
+    override fun getId() = id
+}
 
 /**
  * Чат с каналом
  */
 data class TelegramChannelChat(
-    override val id: Long,
+    val id: Long,
     val title: String?,
     val username: String?
-) : TelegramChat
+) : MessengerTransport.MessengerChatId {
+    override fun getId() = id
+}
