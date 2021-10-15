@@ -1,11 +1,18 @@
 package ru.kiporskiy.tgbot.librarian.transport
 
+import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
+
 interface MessengerTransport {
 
     /**
      * Отправка простого текстового сообщения
      */
     fun sendMessage(chatId: MessengerChatId, text: String)
+
+    /**
+     * Отправка простого текстового сообщения
+     */
+    fun sendMessage(message: TextMessage)
 
     /**
      * Добавить слушателя для команд, получаемых из мессенджера

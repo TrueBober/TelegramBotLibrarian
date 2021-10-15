@@ -6,6 +6,7 @@ import com.pengrad.telegrambot.model.Message
 import com.pengrad.telegrambot.model.MessageEntity
 import com.pengrad.telegrambot.model.Update
 import com.pengrad.telegrambot.request.SendMessage
+import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 
 /**
  * Класс для взаимодействия с ботапи телеграма.
@@ -107,6 +108,13 @@ class TelegramTransportFacade(private val bot: TelegramBot): MessengerTransport 
     override fun sendMessage(chatId: MessengerTransport.MessengerChatId, text: String) {
         val request = SendMessage(chatId.getId(), text)
         bot.execute(request)
+    }
+
+    /**
+     * Отправка простого текстового сообщения
+     */
+    override fun sendMessage(message: TextMessage) {
+        this.sendMessage(message.reader.id, message.text)
     }
 
     override fun addOnCommandListener(listener: (MessengerTransport.MessengerCommand) -> Unit) {
