@@ -1,7 +1,8 @@
 package ru.kiporskiy.tgbot.librarian
 
+import com.pengrad.telegrambot.TelegramBot
 import ru.kiporskiy.tgbot.librarian.handle.Handler
-import ru.kiporskiy.tgbot.librarian.transport.TelegramSender
+import ru.kiporskiy.tgbot.librarian.transport.TelegramTransportFacade
 import java.lang.IllegalArgumentException
 
 fun main(args: Array<String>) {
@@ -16,6 +17,6 @@ fun checkArgs(args: Array<String>) {
 }
 
 fun init(token: String) {
-    TelegramSender.init(token)
-    Handler.initDefault()
+    val messengerTransport = TelegramTransportFacade(TelegramBot(token))
+    Handler.initDefault(messengerTransport)
 }

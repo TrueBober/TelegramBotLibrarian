@@ -6,7 +6,7 @@ import ru.kiporskiy.tgbot.librarian.core.elements.ContextManager
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.storage.BookCategoryRepository
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.AddBookCategoryRequest
-import ru.kiporskiy.tgbot.librarian.transport.Sender
+import ru.kiporskiy.tgbot.librarian.transport.MessengerTransport
 import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 
 /**
@@ -17,7 +17,7 @@ import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
  * @param repository репозиторий категорий
  */
 class AddCategoryCommand(
-    private val sender: Sender,
+    private val sender: MessengerTransport,
     private val reader: Reader,
     private val repository: BookCategoryRepository
 ) : ContextCommand {
@@ -32,10 +32,10 @@ class AddCategoryCommand(
     override fun execute() {
         if (!canAddCategory()) {
             val textMessage = TextMessage(errorMessage, reader)
-            sender.sendTextMessage(textMessage)
+            sender.sendMessage(textMessage)
         } else {
             val textMessage = TextMessage(message, reader)
-            sender.sendTextMessage(textMessage)
+            sender.sendMessage(textMessage)
             ContextManager.setContext(reader, BookCategoryContext("", this))
         }
     }
@@ -48,7 +48,7 @@ class AddCategoryCommand(
             checkCategoryName(category)
             this.repository.add(category, null)
             val textMessage = TextMessage(okMessage, reader)
-            sender.sendTextMessage(textMessage)
+            sender.sendMessage(textMessage)
             SendCommandsListCommand(sender, reader).execute()
         } else {
             execute()

@@ -45,7 +45,7 @@ class TelegramTransportFacade(private val bot: TelegramBot): MessengerTransport 
                 val command = getCommand(message)
                 commandsListener.forEach { it.invoke(command) }
             }
-            message.text() != null && message.text().isBlank() -> {
+            message.text() != null && message.text().isNotBlank() -> {
                 val command = getMessage(message)
                 messagesListener.forEach { it.invoke(command) }
             }

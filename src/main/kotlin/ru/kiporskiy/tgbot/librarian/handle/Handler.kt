@@ -19,8 +19,7 @@ import ru.kiporskiy.tgbot.librarian.event.OnContextMessageEvent
 import ru.kiporskiy.tgbot.librarian.handle.command.*
 import ru.kiporskiy.tgbot.librarian.handle.request.ReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.*
-import ru.kiporskiy.tgbot.librarian.transport.Sender
-import ru.kiporskiy.tgbot.librarian.transport.TelegramSender
+import ru.kiporskiy.tgbot.librarian.transport.*
 
 /**
  * Обработчик всех запросов
@@ -30,7 +29,7 @@ object Handler {
     /**
      * Отправитель сообщений пользователю
      */
-    private lateinit var sender: Sender
+    private lateinit var sender: MessengerTransport
 
     /**
      * Репозиторий категорий
@@ -67,20 +66,35 @@ object Handler {
     /**
      * Инициализация с репозиториями по умолчанию (все хранится в памяти)
      */
-    fun initDefault() {
-        this.sender = TelegramSender
+    fun initDefault(sender: MessengerTransport) {
+        this.sender = sender
         this.categoryRepo = InMemoryBookCategoryRepository
         this.bookRepo = InMemoryBookRepository
         this.readerBookRepo = InMemoryReaderBookingRepository
         this.readerRepo = InMemoryReaderRepository
+        this.setEventListener()
     }
 
-    fun handleEvent(event: Event) {
-        val reader = getReader(event.user)
+    private fun setEventListener() {
+        this.sender.addOnCommandListener {
+            val reader = getEventUser(it.chatId) ?: return@addOnCommandListener
+            this.handleCommand(reader, it.command)
+        }
 
-        when (event) {
-            is OnCommandEvent -> handleCommand(reader, event.command)
-            is OnContextMessageEvent -> handleInputParam(reader, event.message)
+        this.sender.addOnMessageListener {
+            val reader = getEventUser(it.chatId) ?: return@addOnMessageListener
+            this.handleInputParam(reader, it.message)
+        }
+    }
+
+    private fun getEventUser(chatId: MessengerTransport.MessengerChatId): Reader? {
+        return if (chatId is TelegramPrivateChat) {
+            with(chatId) {
+                val user = User(id.toInt(), username ?: "", firstName ?: "", lastName ?: "")
+                return getReader(user)
+            }
+        } else {
+            null
         }
     }
 
