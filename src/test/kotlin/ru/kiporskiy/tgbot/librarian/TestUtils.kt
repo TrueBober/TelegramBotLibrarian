@@ -4,10 +4,9 @@ import ru.kiporskiy.tgbot.librarian.core.elements.Book
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.ReaderRole
 import ru.kiporskiy.tgbot.librarian.core.elements.User
-import ru.kiporskiy.tgbot.librarian.transport.ChatId
 import ru.kiporskiy.tgbot.librarian.transport.EventListener
 import ru.kiporskiy.tgbot.librarian.transport.Sender
-import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
+import ru.kiporskiy.tgbot.librarian.transport.TextMessage
 import java.time.Year
 import java.util.*
 import kotlin.random.Random

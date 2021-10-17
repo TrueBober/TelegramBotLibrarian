@@ -1,7 +1,5 @@
 package ru.kiporskiy.tgbot.librarian.transport
 
-import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
-
 /**
  * Отправитель сообщений во "внешний мир" (например, в телеграм)
  */

@@ -7,7 +7,7 @@ import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCommandsListReaderReq
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
 import ru.kiporskiy.tgbot.librarian.transport.ChatId
 import ru.kiporskiy.tgbot.librarian.transport.Sender
-import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
+import ru.kiporskiy.tgbot.librarian.transport.TextMessage
 
 /**
  * Команда для отправки списка доступных пользователю команд

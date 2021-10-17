@@ -32,11 +32,6 @@ object Handler {
     private lateinit var sender: Sender
 
     /**
-     * Слушатель событий, получаемых извне
-     */
-    private lateinit var eventListener: EventListener
-
-    /**
      * Репозиторий категорий
      */
     private lateinit var categoryRepo: BookCategoryRepository
@@ -73,21 +68,20 @@ object Handler {
      */
     fun initDefault(sender: Sender, eventListener: EventListener) {
         this.sender = sender
-        this.eventListener = eventListener
         this.categoryRepo = InMemoryBookCategoryRepository
         this.bookRepo = InMemoryBookRepository
         this.readerBookRepo = InMemoryReaderBookingRepository
         this.readerRepo = InMemoryReaderRepository
-        this.setEventListener()
+        this.setEventListener(eventListener)
     }
 
-    private fun setEventListener() {
-        this.eventListener.addOnCommandListener {
+    private fun setEventListener(eventListener: EventListener) {
+        eventListener.addOnCommandListener {
             val reader = getEventUser(it.chatId) ?: return@addOnCommandListener
             this.handleCommand(reader, it.command)
         }
 
-        this.eventListener.addOnMessageListener {
+        eventListener.addOnMessageListener {
             val reader = getEventUser(it.chatId) ?: return@addOnMessageListener
             this.handleInputParam(reader, it.message)
         }

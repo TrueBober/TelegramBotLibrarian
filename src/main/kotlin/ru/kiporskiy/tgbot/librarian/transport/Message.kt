@@ -1,6 +1,4 @@
-package ru.kiporskiy.tgbot.librarian.transport.message
-
-import ru.kiporskiy.tgbot.librarian.transport.ChatId
+package ru.kiporskiy.tgbot.librarian.transport
 
 /**
  * Обычное текстовое сообщение

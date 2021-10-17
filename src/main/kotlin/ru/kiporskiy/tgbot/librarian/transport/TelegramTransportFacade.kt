@@ -6,7 +6,6 @@ import com.pengrad.telegrambot.model.Message
 import com.pengrad.telegrambot.model.MessageEntity
 import com.pengrad.telegrambot.model.Update
 import com.pengrad.telegrambot.request.SendMessage
-import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 
 /**
  * Класс для взаимодействия с ботапи телеграма.
