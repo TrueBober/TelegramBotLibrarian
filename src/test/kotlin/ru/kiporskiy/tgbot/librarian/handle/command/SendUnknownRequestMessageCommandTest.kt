@@ -15,13 +15,14 @@ internal class SendUnknownRequestMessageCommandTest {
     internal fun execute() {
         val sender = getTestSender()
         val reader = getTestReader()
+        val readerChatId = getTestReader(reader.id)
         val command = SendUnknownRequestMessageCommand(sender, reader)
 
         command.execute()
 
         assertEquals(1, sender.sentMessages.size)
         assertEquals(SendUnknownRequestMessageCommand.message, sender.sentMessages[0].text)
-        assertSame(reader, sender.sentMessages[0].reader)
+        assertSame(readerChatId, sender.sentMessages[0].chatID)
     }
 
     @Test

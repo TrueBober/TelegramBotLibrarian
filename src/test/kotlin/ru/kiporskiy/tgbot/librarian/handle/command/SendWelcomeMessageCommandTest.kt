@@ -8,6 +8,7 @@ import ru.kiporskiy.tgbot.librarian.getTestReader
 import ru.kiporskiy.tgbot.librarian.getTestSender
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
+import ru.kiporskiy.tgbot.librarian.transport.ChatId
 
 internal class SendWelcomeMessageCommandTest {
 
@@ -16,13 +17,14 @@ internal class SendWelcomeMessageCommandTest {
     internal fun execute() {
         val sender = getTestSender()
         val reader = getTestReader()
+        val readerChatId = ChatId.getSimpleChatId(reader.id)
         val command = SendWelcomeMessageCommand(sender, reader)
 
         command.execute()
 
         assertEquals(1, sender.sentMessages.size)
         assertEquals(SendWelcomeMessageCommand.message, sender.sentMessages[0].text)
-        assertSame(reader, sender.sentMessages[0].reader)
+        assertSame(readerChatId, sender.sentMessages[0].chatID)
     }
 
     @Test

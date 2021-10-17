@@ -10,6 +10,7 @@ import ru.kiporskiy.tgbot.librarian.handle.Handler
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCommandsListReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
+import ru.kiporskiy.tgbot.librarian.transport.ChatId
 
 internal class SendCommandsListCommandTest {
 
@@ -21,12 +22,13 @@ internal class SendCommandsListCommandTest {
 
         val sender = getTestSender()
         val reader = getTestReader(readerRole = ReaderRole.SUPERUSER)
+        val readerChatId = ChatId.getSimpleChatId(reader.id)
         val command = SendCommandsListCommand(sender, reader)
 
         command.execute()
 
         assertEquals(1, sender.sentMessages.size)
-        assertSame(reader, sender.sentMessages[0].reader)
+        assertSame(readerChatId, sender.sentMessages[0].chatID)
 
         val messageText = sender.sentMessages[0].text
         assertTrue(messageText.startsWith(SendCommandsListCommand.message))

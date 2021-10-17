@@ -2,7 +2,16 @@ package ru.kiporskiy.tgbot.librarian.transport
 
 sealed interface ChatId {
     val id: Long
+
+    companion object {
+        fun getSimpleChatId(id: Long) = ShortChatId(id)
+    }
 }
+
+/**
+ * Ид чата для отправки сообщений
+ */
+data class ShortChatId(override val id: Long) : ChatId
 
 /**
  * Чат 1 на 1 с пользователем

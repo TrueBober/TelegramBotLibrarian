@@ -4,6 +4,7 @@ import ru.kiporskiy.tgbot.librarian.core.elements.BookCategory
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.storage.BookCategoryRepository
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCategoriesListReaderRequest
+import ru.kiporskiy.tgbot.librarian.transport.ChatId
 import ru.kiporskiy.tgbot.librarian.transport.Sender
 import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 
@@ -25,7 +26,7 @@ class GetCategoriesCommand(
     }
 
     override fun execute() {
-        val textMessage = TextMessage(message + getCategoriesString(), reader)
+        val textMessage = TextMessage(message + getCategoriesString(), ChatId.getSimpleChatId(reader.id))
         sender.sendMessage(textMessage)
     }
 

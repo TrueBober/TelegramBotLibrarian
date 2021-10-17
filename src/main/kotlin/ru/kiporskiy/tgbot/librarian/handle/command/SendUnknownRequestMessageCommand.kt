@@ -2,6 +2,7 @@ package ru.kiporskiy.tgbot.librarian.handle.command
 
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
+import ru.kiporskiy.tgbot.librarian.transport.ChatId
 import ru.kiporskiy.tgbot.librarian.transport.Sender
 import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 
@@ -18,7 +19,7 @@ class SendUnknownRequestMessageCommand(private val sender: Sender, private val r
     }
 
     override fun execute() {
-        val textMessage = TextMessage(message, reader)
+        val textMessage = TextMessage(message, ChatId.getSimpleChatId(reader.id))
         sender.sendMessage(textMessage)
     }
 

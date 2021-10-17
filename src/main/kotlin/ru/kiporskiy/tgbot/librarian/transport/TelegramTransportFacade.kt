@@ -106,7 +106,7 @@ class TelegramTransportFacade(private val bot: TelegramBot): EventListener, Send
      * Отправка простого текстового сообщения
      */
     override fun sendMessage(message: TextMessage) {
-        this.sendMessage(message.reader.id, message.text)
+        this.sendMessage(message.chatID.id, message.text)
     }
 
     override fun addOnCommandListener(listener: (EventListener.MessengerCommand) -> Unit) {
