@@ -5,7 +5,7 @@ import ru.kiporskiy.tgbot.librarian.handle.Handler
 import ru.kiporskiy.tgbot.librarian.handle.request.ReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCommandsListReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
-import ru.kiporskiy.tgbot.librarian.transport.MessengerTransport
+import ru.kiporskiy.tgbot.librarian.transport.Sender
 import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 
 /**
@@ -14,7 +14,7 @@ import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
  * @param reader читатель, для которого выполняется команда
  * @param sender транспорт, по которому будет отправлено сообщение
  */
-class SendCommandsListCommand(private val sender: MessengerTransport, private val reader: Reader) : Command {
+class SendCommandsListCommand(private val sender: Sender, private val reader: Reader) : Command {
 
     companion object {
         const val message = "Список доступных команд: \n"

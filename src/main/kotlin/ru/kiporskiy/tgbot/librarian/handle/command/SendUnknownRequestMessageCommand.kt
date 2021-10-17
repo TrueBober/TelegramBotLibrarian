@@ -2,7 +2,7 @@ package ru.kiporskiy.tgbot.librarian.handle.command
 
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
-import ru.kiporskiy.tgbot.librarian.transport.MessengerTransport
+import ru.kiporskiy.tgbot.librarian.transport.Sender
 import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 
 /**
@@ -11,7 +11,7 @@ import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
  * @param reader читатель, для которого выполняется команда
  * @param sender транспорт, по которому будет отправлено сообщение
  */
-class SendUnknownRequestMessageCommand(private val sender: MessengerTransport, private val reader: Reader) : Command {
+class SendUnknownRequestMessageCommand(private val sender: Sender, private val reader: Reader) : Command {
 
     companion object {
         const val message = "Неизвестная команда. Для получения списка команд отправьте /get_commands из любого меню"

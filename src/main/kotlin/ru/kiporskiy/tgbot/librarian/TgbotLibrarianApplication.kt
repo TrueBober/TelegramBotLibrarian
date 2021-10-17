@@ -18,5 +18,5 @@ fun checkArgs(args: Array<String>) {
 
 fun init(token: String) {
     val messengerTransport = TelegramTransportFacade(TelegramBot(token))
-    Handler.initDefault(messengerTransport)
+    Handler.initDefault(messengerTransport, messengerTransport)
 }

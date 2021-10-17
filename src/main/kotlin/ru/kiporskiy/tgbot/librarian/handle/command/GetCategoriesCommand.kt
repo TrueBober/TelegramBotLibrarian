@@ -4,7 +4,7 @@ import ru.kiporskiy.tgbot.librarian.core.elements.BookCategory
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.storage.BookCategoryRepository
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCategoriesListReaderRequest
-import ru.kiporskiy.tgbot.librarian.transport.MessengerTransport
+import ru.kiporskiy.tgbot.librarian.transport.Sender
 import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 
 /**
@@ -15,7 +15,7 @@ import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
  * @param repository репозиторий категорий
  */
 class GetCategoriesCommand(
-    private val sender: MessengerTransport,
+    private val sender: Sender,
     private val reader: Reader,
     private val repository: BookCategoryRepository
 ) : Command {

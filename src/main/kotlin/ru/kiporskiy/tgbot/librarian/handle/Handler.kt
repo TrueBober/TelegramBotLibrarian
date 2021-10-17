@@ -13,13 +13,13 @@ import ru.kiporskiy.tgbot.librarian.core.elements.storage.impl.InMemoryBookCateg
 import ru.kiporskiy.tgbot.librarian.core.elements.storage.impl.InMemoryBookRepository
 import ru.kiporskiy.tgbot.librarian.core.elements.storage.impl.InMemoryReaderBookingRepository
 import ru.kiporskiy.tgbot.librarian.core.elements.storage.impl.InMemoryReaderRepository
-import ru.kiporskiy.tgbot.librarian.event.Event
-import ru.kiporskiy.tgbot.librarian.event.OnCommandEvent
-import ru.kiporskiy.tgbot.librarian.event.OnContextMessageEvent
 import ru.kiporskiy.tgbot.librarian.handle.command.*
 import ru.kiporskiy.tgbot.librarian.handle.request.ReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.*
-import ru.kiporskiy.tgbot.librarian.transport.*
+import ru.kiporskiy.tgbot.librarian.transport.ChatId
+import ru.kiporskiy.tgbot.librarian.transport.EventListener
+import ru.kiporskiy.tgbot.librarian.transport.PrivateChat
+import ru.kiporskiy.tgbot.librarian.transport.Sender
 
 /**
  * Обработчик всех запросов
@@ -29,7 +29,12 @@ object Handler {
     /**
      * Отправитель сообщений пользователю
      */
-    private lateinit var sender: MessengerTransport
+    private lateinit var sender: Sender
+
+    /**
+     * Слушатель событий, получаемых извне
+     */
+    private lateinit var eventListener: EventListener
 
     /**
      * Репозиторий категорий
@@ -66,8 +71,9 @@ object Handler {
     /**
      * Инициализация с репозиториями по умолчанию (все хранится в памяти)
      */
-    fun initDefault(sender: MessengerTransport) {
+    fun initDefault(sender: Sender, eventListener: EventListener) {
         this.sender = sender
+        this.eventListener = eventListener
         this.categoryRepo = InMemoryBookCategoryRepository
         this.bookRepo = InMemoryBookRepository
         this.readerBookRepo = InMemoryReaderBookingRepository
@@ -76,19 +82,19 @@ object Handler {
     }
 
     private fun setEventListener() {
-        this.sender.addOnCommandListener {
+        this.eventListener.addOnCommandListener {
             val reader = getEventUser(it.chatId) ?: return@addOnCommandListener
             this.handleCommand(reader, it.command)
         }
 
-        this.sender.addOnMessageListener {
+        this.eventListener.addOnMessageListener {
             val reader = getEventUser(it.chatId) ?: return@addOnMessageListener
             this.handleInputParam(reader, it.message)
         }
     }
 
-    private fun getEventUser(chatId: MessengerTransport.MessengerChatId): Reader? {
-        return if (chatId is TelegramPrivateChat) {
+    private fun getEventUser(chatId: ChatId): Reader? {
+        return if (chatId is PrivateChat) {
             with(chatId) {
                 val user = User(id.toInt(), username ?: "", firstName ?: "", lastName ?: "")
                 return getReader(user)

@@ -4,7 +4,9 @@ import ru.kiporskiy.tgbot.librarian.core.elements.Book
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.ReaderRole
 import ru.kiporskiy.tgbot.librarian.core.elements.User
-import ru.kiporskiy.tgbot.librarian.transport.MessengerTransport
+import ru.kiporskiy.tgbot.librarian.transport.ChatId
+import ru.kiporskiy.tgbot.librarian.transport.EventListener
+import ru.kiporskiy.tgbot.librarian.transport.Sender
 import ru.kiporskiy.tgbot.librarian.transport.message.TextMessage
 import java.time.Year
 import java.util.*
@@ -44,35 +46,37 @@ fun getTestReader(
  * Тестовый "отправитель" сообщений.
  * Складывает все отправленные сообщения в список.
  */
-class TestSender: MessengerTransport {
+class TestSender: Sender {
 
     val sentMessages: MutableList<TextMessage> = LinkedList()
-
-    val sentMessagesPair: MutableList<Pair<MessengerTransport.MessengerChatId, String>> = LinkedList()
-
-    val commandsListener: MutableList<(MessengerTransport.MessengerCommand) -> Unit> = LinkedList()
-
-    val messageTextListener: MutableList<(MessengerTransport.MessengerTextMessage) -> Unit> = LinkedList()
-
-    override fun sendMessage(chatId: MessengerTransport.MessengerChatId, text: String) {
-        sentMessagesPair += chatId to text
-    }
 
     override fun sendMessage(message: TextMessage) {
         this.sentMessages += message
     }
 
-    override fun addOnCommandListener(listener: (MessengerTransport.MessengerCommand) -> Unit) {
+}
+
+class TestEventListener: EventListener {
+
+    val commandsListener: MutableList<(EventListener.MessengerCommand) -> Unit> = LinkedList()
+
+    val messageTextListener: MutableList<(EventListener.MessengerTextMessage) -> Unit> = LinkedList()
+
+    override fun addOnCommandListener(listener: (EventListener.MessengerCommand) -> Unit) {
         this.commandsListener += listener
     }
 
-    override fun addOnMessageListener(listener: (MessengerTransport.MessengerTextMessage) -> Unit) {
+    override fun addOnMessageListener(listener: (EventListener.MessengerTextMessage) -> Unit) {
         this.messageTextListener += listener
     }
-
 }
 
 /**
  * Получить тестового отправителя сообщений
  */
 fun getTestSender() = TestSender()
+
+/**
+ * Получить тестового отправителя сообщений
+ */
+fun getTestEventListener() = TestEventListener()
