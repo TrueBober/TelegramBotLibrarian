@@ -1,5 +1,7 @@
 package ru.kiporskiy.tgbot.librarian
 
+import com.nhaarman.mockitokotlin2.mock
+import com.pengrad.telegrambot.TelegramBot
 import ru.kiporskiy.tgbot.librarian.core.elements.Book
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.ReaderRole
@@ -79,3 +81,8 @@ fun getTestSender() = TestSender()
  * Получить тестового отправителя сообщений
  */
 fun getTestEventListener() = TestEventListener()
+
+/**
+ * Получить мок для бота телеграма
+ */
+fun getTestTelegramBot(): TelegramBot = mock()

@@ -11,6 +11,7 @@ import com.pengrad.telegrambot.request.SendMessage
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import ru.kiporskiy.tgbot.librarian.getTestTelegramBot
 import kotlin.test.assertTrue
 
 /**
@@ -35,7 +36,7 @@ internal class TelegramTransportFacadeTest {
 
     @BeforeEach
     internal fun setUp() {
-        bot = mock()
+        bot = getTestTelegramBot()
         transport = TelegramTransportFacade(bot)
     }
 
@@ -43,7 +44,7 @@ internal class TelegramTransportFacadeTest {
     @DisplayName("Отправить простое текстовое сообщение")
     internal fun sendMessage_text() {
         val text = "Text"
-        transport.sendMessage(123L, text)
+        transport.sendMessage(TextMessage(text, ChatId.getSimpleChatId(123L)))
         verify(bot).execute(any<SendMessage>())
     }
 
@@ -79,7 +80,7 @@ internal class TelegramTransportFacadeTest {
         assertTrue { success }
     }
 
-    private fun mockMessageUpdate(text: String, entityStart: Int = 0, entityEnd: Int = 0, entityType: MessageEntity.Type?): Update {
+    private fun mockMessageUpdate(text: String, entityStart: Int = 0, entityEnd: Int = 0, entityType: MessageEntity.Type? = null): Update {
         val chatId = 1000L
         val chat = mock<Chat>()
         doReturn(chatId).whenever(chat).id()
@@ -99,4 +100,34 @@ internal class TelegramTransportFacadeTest {
         }
         return update
     }
+
+    @Test
+    @DisplayName("Тестирование функции добавления слушателя на событие о получении команды для бота от телеграма")
+    internal fun addOnTextMessageListener() {
+        var success = false
+
+        //параметры сообщения
+        val title = "TestMessage"
+        val task: (EventListener.MessengerTextMessage) -> Unit = {
+            success = it.message == title
+        }
+
+        //замокать обновление
+        val update = this.mockMessageUpdate(title)
+
+        var botapiUpdateListener: UpdatesListener? = null
+        doAnswer {
+            botapiUpdateListener = it.getArgument(0) as UpdatesListener
+        }.whenever(bot).setUpdatesListener(any())
+
+        //повторная инициализация, чтобы добавить слушателя, созданного выше
+        transport = TelegramTransportFacade(bot)
+
+        transport.addOnMessageListener(task)
+
+        botapiUpdateListener?.process(listOf(update))
+
+        assertTrue { success }
+    }
+
 }
