@@ -12,4 +12,11 @@ interface Sender {
      */
     fun sendMessage(message: TextMessage)
 
+    /**
+     * Отправка сообщения со встроенной клавиатурой
+     *
+     * @param message сообщение со встроенной клавиатурой
+     */
+    fun sendMessage(message: KeyboardMessage)
+
 }

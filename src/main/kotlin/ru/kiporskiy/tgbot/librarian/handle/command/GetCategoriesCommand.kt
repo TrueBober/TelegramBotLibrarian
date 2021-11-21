@@ -23,10 +23,16 @@ class GetCategoriesCommand(
 
     companion object {
         const val message = "Список категорий книг...\n\n"
+        const val noCategoriesMessage = "Список категорий пуст"
     }
 
     override fun execute() {
-        val textMessage = TextMessage(message + getCategoriesString(), ChatId.getSimpleChatId(reader.id))
+        val categoriesListString = getCategoriesString()
+
+        val textMessage = if (categoriesListString.isBlank())
+            TextMessage(noCategoriesMessage, ChatId.getSimpleChatId(reader.id))
+        else
+            TextMessage(message + getCategoriesString(), ChatId.getSimpleChatId(reader.id))
         sender.sendMessage(textMessage)
     }
 
@@ -34,13 +40,14 @@ class GetCategoriesCommand(
 
     private fun getCategoriesString(): String {
         val builder = StringBuilder()
-        repository.findAll().forEach { addCategoriesString(builder, 0, it) }
+        val allCategories = repository.findAll()
+        allCategories.forEach { addCategoriesString(builder, it) }
         return builder.toString()
     }
 
-    private fun addCategoriesString(builder: StringBuilder, level: Int, category: BookCategory) {
-        for (i in 0 until level)
+    private fun addCategoriesString(builder: StringBuilder, category: BookCategory) {
+        for (i in 0 until category.getLevel())
             builder.append('-')
-        builder.append(' ').append(category.name).append('\n')
+        builder.append(category.name).append('\n')
     }
 }

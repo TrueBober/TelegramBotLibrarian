@@ -7,6 +7,7 @@ import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.ReaderRole
 import ru.kiporskiy.tgbot.librarian.core.elements.User
 import ru.kiporskiy.tgbot.librarian.transport.EventListener
+import ru.kiporskiy.tgbot.librarian.transport.KeyboardMessage
 import ru.kiporskiy.tgbot.librarian.transport.Sender
 import ru.kiporskiy.tgbot.librarian.transport.TextMessage
 import java.time.Year
@@ -53,6 +54,10 @@ class TestSender: Sender {
 
     override fun sendMessage(message: TextMessage) {
         this.sentMessages += message
+    }
+
+    override fun sendMessage(message: KeyboardMessage) {
+        TODO("Not yet implemented")
     }
 
 }

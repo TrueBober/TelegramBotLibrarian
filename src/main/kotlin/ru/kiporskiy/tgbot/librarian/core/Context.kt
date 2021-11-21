@@ -1,5 +1,6 @@
 package ru.kiporskiy.tgbot.librarian.core
 
+import ru.kiporskiy.tgbot.librarian.core.elements.BookCategory
 import ru.kiporskiy.tgbot.librarian.handle.command.ContextCommand
 
 /**
@@ -22,7 +23,7 @@ interface Context {
 /**
  * Пустой контекст без содержимого
  */
-object EmptyContext: Context {
+object EmptyContext : Context {
 
     override val command: ContextCommand?
         get() = null
@@ -35,8 +36,24 @@ object EmptyContext: Context {
 /**
  * Контекст запроса при добавлении категории
  */
-data class BookCategoryContext(var categoryName: String,
-                               override val command: ContextCommand): Context {
+data class BookParentCategoryContext(
+    var categoryName: String,
+    override val command: ContextCommand
+) : Context {
+
+    override fun setContextMessage(message: String) {
+        this.categoryName = message
+    }
+}
+
+/**
+ * Контекст запроса при добавлении категории
+ */
+data class BookCategoryContext(
+    val parentCategoryContext: BookCategory?,
+    var categoryName: String,
+    override val command: ContextCommand
+) : Context {
 
     override fun setContextMessage(message: String) {
         this.categoryName = message

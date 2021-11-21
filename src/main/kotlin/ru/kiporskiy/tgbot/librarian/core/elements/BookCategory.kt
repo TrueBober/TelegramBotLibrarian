@@ -25,4 +25,12 @@ data class BookCategory(val id: Int, var name: String, var parent: BookCategory?
     override fun hashCode(): Int {
         return id
     }
+
+    fun getLevel(): Int {
+        val currentParent = parent
+        return if (currentParent == null)
+            0
+        else
+            currentParent.getLevel() + 1
+    }
 }
