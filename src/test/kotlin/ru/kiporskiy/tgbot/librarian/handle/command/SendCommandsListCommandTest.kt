@@ -11,6 +11,7 @@ import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCommandsListReaderReq
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
 import ru.kiporskiy.tgbot.librarian.transport.ChatId
+import ru.kiporskiy.tgbot.librarian.transport.TextOutboundMessage
 
 internal class SendCommandsListCommandTest {
 
@@ -28,9 +29,9 @@ internal class SendCommandsListCommandTest {
         command.execute()
 
         assertEquals(1, sender.sentMessages.size)
-        assertSame(readerChatId, sender.sentMessages[0].chatID)
+        assertEquals(readerChatId.id, (sender.sentMessages[0] as TextOutboundMessage).chatID.id)
 
-        val messageText = sender.sentMessages[0].text
+        val messageText = (sender.sentMessages[0] as TextOutboundMessage).text
         assertTrue(messageText.startsWith(SendCommandsListCommand.message))
         allCommands.all { messageText.contains(it.getCommand()) && messageText.contains(it.getDescription()) }
     }

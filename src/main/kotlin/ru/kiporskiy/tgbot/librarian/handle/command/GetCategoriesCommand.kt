@@ -6,7 +6,7 @@ import ru.kiporskiy.tgbot.librarian.core.elements.storage.BookCategoryRepository
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCategoriesListReaderRequest
 import ru.kiporskiy.tgbot.librarian.transport.ChatId
 import ru.kiporskiy.tgbot.librarian.transport.Sender
-import ru.kiporskiy.tgbot.librarian.transport.TextMessage
+import ru.kiporskiy.tgbot.librarian.transport.TextOutboundMessage
 
 /**
  * Команда для получения списка всех категорий
@@ -30,9 +30,9 @@ class GetCategoriesCommand(
         val categoriesListString = getCategoriesString()
 
         val textMessage = if (categoriesListString.isBlank())
-            TextMessage(noCategoriesMessage, ChatId.getSimpleChatId(reader.id))
+            TextOutboundMessage(noCategoriesMessage, ChatId.getSimpleChatId(reader.id))
         else
-            TextMessage(message + getCategoriesString(), ChatId.getSimpleChatId(reader.id))
+            TextOutboundMessage(message + getCategoriesString(), ChatId.getSimpleChatId(reader.id))
         sender.sendMessage(textMessage)
     }
 

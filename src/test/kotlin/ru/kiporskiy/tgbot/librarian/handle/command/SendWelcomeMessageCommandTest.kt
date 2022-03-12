@@ -9,6 +9,7 @@ import ru.kiporskiy.tgbot.librarian.getTestSender
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
 import ru.kiporskiy.tgbot.librarian.transport.ChatId
+import ru.kiporskiy.tgbot.librarian.transport.TextOutboundMessage
 
 internal class SendWelcomeMessageCommandTest {
 
@@ -23,8 +24,8 @@ internal class SendWelcomeMessageCommandTest {
         command.execute()
 
         assertEquals(1, sender.sentMessages.size)
-        assertEquals(SendWelcomeMessageCommand.message, sender.sentMessages[0].text)
-        assertSame(readerChatId, sender.sentMessages[0].chatID)
+        assertEquals(SendWelcomeMessageCommand.message, (sender.sentMessages[0] as TextOutboundMessage).text)
+        assertEquals(readerChatId.id, (sender.sentMessages[0] as TextOutboundMessage).chatID.id)
     }
 
     @Test

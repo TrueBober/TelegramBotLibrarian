@@ -1,5 +1,8 @@
 package ru.kiporskiy.tgbot.librarian.transport
 
+/**
+ * Идентификатор чата, с которым происходит обмен сообщениями.
+ */
 sealed interface ChatId {
     val id: Long
 

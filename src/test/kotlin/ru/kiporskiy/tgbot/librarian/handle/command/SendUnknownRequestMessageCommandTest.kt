@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import ru.kiporskiy.tgbot.librarian.getTestReader
 import ru.kiporskiy.tgbot.librarian.getTestSender
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
+import ru.kiporskiy.tgbot.librarian.transport.TextOutboundMessage
 
 internal class SendUnknownRequestMessageCommandTest {
 
@@ -21,8 +22,8 @@ internal class SendUnknownRequestMessageCommandTest {
         command.execute()
 
         assertEquals(1, sender.sentMessages.size)
-        assertEquals(SendUnknownRequestMessageCommand.message, sender.sentMessages[0].text)
-        assertSame(readerChatId, sender.sentMessages[0].chatID)
+        assertEquals(SendUnknownRequestMessageCommand.message, (sender.sentMessages[0] as TextOutboundMessage).text)
+        assertEquals(readerChatId.id, (sender.sentMessages[0] as TextOutboundMessage).chatID.id)
     }
 
     @Test

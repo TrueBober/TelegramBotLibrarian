@@ -7,7 +7,7 @@ import ru.kiporskiy.tgbot.librarian.handle.request.impl.GetCommandsListReaderReq
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
 import ru.kiporskiy.tgbot.librarian.transport.ChatId
 import ru.kiporskiy.tgbot.librarian.transport.Sender
-import ru.kiporskiy.tgbot.librarian.transport.TextMessage
+import ru.kiporskiy.tgbot.librarian.transport.TextOutboundMessage
 
 /**
  * Команда для отправки списка доступных пользователю команд
@@ -25,7 +25,7 @@ class SendCommandsListCommand(private val sender: Sender, private val reader: Re
         val commands = getCommands()
         val stringCommands = toString(commands)
         val message = "$message\n$stringCommands"
-        val textMessage = TextMessage(message, ChatId.getSimpleChatId(reader.id))
+        val textMessage = TextOutboundMessage(message, ChatId.getSimpleChatId(reader.id))
         sender.sendMessage(textMessage)
     }
 

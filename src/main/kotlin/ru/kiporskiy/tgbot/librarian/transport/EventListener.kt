@@ -15,6 +15,7 @@ interface EventListener {
      */
     fun addOnMessageListener(listener: (MessengerTextMessage) -> Unit)
 
+
     /**
      * Команда, получаемая от мессенджера (может иметь параметры)
      */

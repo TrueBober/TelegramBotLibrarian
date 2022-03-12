@@ -4,7 +4,7 @@ import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.StartDiscussionReaderRequest
 import ru.kiporskiy.tgbot.librarian.transport.ChatId
 import ru.kiporskiy.tgbot.librarian.transport.Sender
-import ru.kiporskiy.tgbot.librarian.transport.TextMessage
+import ru.kiporskiy.tgbot.librarian.transport.TextOutboundMessage
 
 /**
  * Команда для отправки приветствия пользователю
@@ -20,7 +20,7 @@ class SendWelcomeMessageCommand(private val sender: Sender, private val reader: 
     }
 
     override fun execute() {
-        val textMessage = TextMessage(message, ChatId.getSimpleChatId(reader.id))
+        val textMessage = TextOutboundMessage(message, ChatId.getSimpleChatId(reader.id))
         sender.sendMessage(textMessage)
     }
 

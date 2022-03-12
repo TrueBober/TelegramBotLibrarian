@@ -4,7 +4,7 @@ import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.handle.request.impl.UnknownReaderRequest
 import ru.kiporskiy.tgbot.librarian.transport.ChatId
 import ru.kiporskiy.tgbot.librarian.transport.Sender
-import ru.kiporskiy.tgbot.librarian.transport.TextMessage
+import ru.kiporskiy.tgbot.librarian.transport.TextOutboundMessage
 
 /**
  * Команда для отправки сообщения о неизвестном запросе, полученном от пользователя
@@ -19,7 +19,7 @@ class SendUnknownRequestMessageCommand(private val sender: Sender, private val r
     }
 
     override fun execute() {
-        val textMessage = TextMessage(message, ChatId.getSimpleChatId(reader.id))
+        val textMessage = TextOutboundMessage(message, ChatId.getSimpleChatId(reader.id))
         sender.sendMessage(textMessage)
     }
 

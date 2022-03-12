@@ -34,7 +34,7 @@ class AddCategoryCommand(
     //пользователь ввел команду /add_category
     override fun execute() {
         if (!canAddCategory()) {
-            val textMessage = TextMessage(errorMessage, ChatId.getSimpleChatId(reader.id))
+            val textMessage = TextOutboundMessage(errorMessage, ChatId.getSimpleChatId(reader.id))
             sender.sendMessage(textMessage)
         } else {
             selectSuperCategory()
@@ -53,7 +53,7 @@ class AddCategoryCommand(
             }
             keyboard[rowNumber].add(Button(bookCategory.name))
         }
-        val textMessage = KeyboardMessage(selectParentCategoryMessage, keyboard, ChatId.getSimpleChatId(reader.id))
+        val textMessage = KeyboardOutboundMessage(selectParentCategoryMessage, keyboard, ChatId.getSimpleChatId(reader.id))
         sender.sendMessage(textMessage)
         ContextManager.setContext(reader, BookParentCategoryContext("", this))
     }
@@ -64,7 +64,7 @@ class AddCategoryCommand(
             is BookParentCategoryContext -> {
                 val parentCategoryName = context.categoryName
                 val category = this.repository.findByName(parentCategoryName)
-                val textMessage = TextMessage(message, ChatId.getSimpleChatId(reader.id))
+                val textMessage = TextOutboundMessage(message, ChatId.getSimpleChatId(reader.id))
                 sender.sendMessage(textMessage)
                 ContextManager.setContext(reader, BookCategoryContext(category, "", this))
             }
@@ -74,7 +74,7 @@ class AddCategoryCommand(
                 checkCategoryName(category)
                 this.repository.add(category, context.parentCategoryContext)
                 val message = okMessage.replace("{}", category)
-                val textMessage = TextMessage(message, ChatId.getSimpleChatId(reader.id))
+                val textMessage = TextOutboundMessage(message, ChatId.getSimpleChatId(reader.id))
                 sender.sendMessage(textMessage)
                 SendCommandsListCommand(sender, reader).execute()
             }

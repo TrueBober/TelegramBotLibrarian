@@ -5,9 +5,6 @@ import com.pengrad.telegrambot.model.Chat
 import com.pengrad.telegrambot.model.Message
 import com.pengrad.telegrambot.model.MessageEntity
 import com.pengrad.telegrambot.model.Update
-import com.pengrad.telegrambot.model.request.*
-import com.pengrad.telegrambot.request.SendMessage
-import java.util.*
 
 /**
  * Класс для взаимодействия с ботапи телеграма.
@@ -95,12 +92,8 @@ class TelegramTransportFacade(private val bot: TelegramBot): EventListener, Send
         return EventListener.MessengerTextMessage(chat, text)
     }
 
-    /**
-     * Отправка простого текстового сообщения
-     */
-    override fun sendMessage(message: TextMessage) {
-        val request = SendMessage(message.chatID.id, message.text)
-        bot.execute(request)
+    override fun sendMessage(message: OutboundMessage) {
+        bot.execute(message.toRequest())
     }
 
     override fun addOnCommandListener(listener: (EventListener.MessengerCommand) -> Unit) {
@@ -118,27 +111,5 @@ class TelegramTransportFacade(private val bot: TelegramBot): EventListener, Send
             Chat.Type.channel -> ChannelChat(chat.id(), chat.title(), chat.username())
             Chat.Type.supergroup -> SupergroupChat(chat.id(), chat.title(), chat.username())
         }
-    }
-
-    override fun sendMessage(message: KeyboardMessage) {
-        val request = SendMessage(message.chatID.id, message.message)
-        val replyMarkup = getKeyboard(message.buttons)
-        request.replyMarkup(replyMarkup)
-        bot.execute(request)
-    }
-
-    private fun getKeyboard(buttons: List<List<Button>>): Keyboard {
-        val keyboardRows = LinkedList<Array<KeyboardButton>>()
-        for (buttonRow in buttons) {
-            val row = getKeyboardRow(buttonRow)
-            keyboardRows.add(row)
-        }
-        val result =  ReplyKeyboardMarkup(*keyboardRows.toTypedArray())
-        result.oneTimeKeyboard(true)
-        return result
-    }
-
-    private fun getKeyboardRow(buttons: List<Button>): Array<KeyboardButton> {
-        return buttons.map { KeyboardButton(it.text) }.toTypedArray()
     }
 }

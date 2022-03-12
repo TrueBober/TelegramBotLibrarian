@@ -6,10 +6,8 @@ import ru.kiporskiy.tgbot.librarian.core.elements.Book
 import ru.kiporskiy.tgbot.librarian.core.elements.Reader
 import ru.kiporskiy.tgbot.librarian.core.elements.ReaderRole
 import ru.kiporskiy.tgbot.librarian.core.elements.User
+import ru.kiporskiy.tgbot.librarian.transport.*
 import ru.kiporskiy.tgbot.librarian.transport.EventListener
-import ru.kiporskiy.tgbot.librarian.transport.KeyboardMessage
-import ru.kiporskiy.tgbot.librarian.transport.Sender
-import ru.kiporskiy.tgbot.librarian.transport.TextMessage
 import java.time.Year
 import java.util.*
 import kotlin.random.Random
@@ -50,14 +48,10 @@ fun getTestReader(
  */
 class TestSender: Sender {
 
-    val sentMessages: MutableList<TextMessage> = LinkedList()
+    val sentMessages: MutableList<OutboundMessage> = LinkedList()
 
-    override fun sendMessage(message: TextMessage) {
+    override fun sendMessage(message: OutboundMessage) {
         this.sentMessages += message
-    }
-
-    override fun sendMessage(message: KeyboardMessage) {
-        TODO("Not yet implemented")
     }
 
 }

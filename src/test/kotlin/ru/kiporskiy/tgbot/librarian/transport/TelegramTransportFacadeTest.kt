@@ -44,7 +44,7 @@ internal class TelegramTransportFacadeTest {
     @DisplayName("Отправить простое текстовое сообщение")
     internal fun sendMessage_text() {
         val text = "Text"
-        transport.sendMessage(TextMessage(text, ChatId.getSimpleChatId(123L)))
+        transport.sendMessage(TextOutboundMessage(text, ChatId.getSimpleChatId(123L)))
         verify(bot).execute(any<SendMessage>())
     }
 
