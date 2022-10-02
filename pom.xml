@@ -12,11 +12,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.5.30</kotlin.version>
+        <kotlin.version>1.7.20</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
         <junit.version>5.8.0</junit.version>
         <botapi.version>5.4.0</botapi.version>
-        <jackson.databind>2.12.5</jackson.databind>
+        <jackson.databind>2.13.4</jackson.databind>
         <mockito.version>2.2.0</mockito.version>
     </properties>
 
